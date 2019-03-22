@@ -15,6 +15,11 @@ public class Player : MonoBehaviour
 
     private CrateController2D pushingCrate;
 
+    public bool ControlsFrozen = false;
+    public bool PositionFrozen = false;
+
+    public GameObject PlayerBody;
+
 	public void Awake()
 	{
 		_controller = GetComponent<CharacterController2D> ();
@@ -23,8 +28,12 @@ public class Player : MonoBehaviour
 
 	public void Update()
 	{
-		if(!IsDead)
-			HandleInput ();
+        if (!IsDead)
+        {
+            if (!ControlsFrozen) HandleInput();
+            _controller.MotionFrozen = PositionFrozen;
+        }
+			
 
 		var movementFactor = _controller.State.IsGrounded ? SpeedAccelerationOnGround : SpeedAccelerationInAir;
 
@@ -34,7 +43,9 @@ public class Player : MonoBehaviour
 		else
 			_controller.SetHorizontalForce (new Vector2(Mathf.Lerp(_controller.Velocity.x, _normalizedHorizontalSpeed * MaxSpeed, Time.deltaTime * movementFactor), 0));
 	}
-
+    public float GetHorzontalDisplacement(){
+        return _controller.Velocity.x * Time.deltaTime;
+    }
 	public void Kill(){
 		_controller.HandleCollisions = false;
 		GetComponent<Collider2D>().enabled = false;
@@ -55,13 +66,14 @@ public class Player : MonoBehaviour
 	}
 
 	private void HandleInput(){
-		if (Input.GetKey (KeyCode.D)) {
+		if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) {
+
 			_normalizedHorizontalSpeed = 1;
 			if (!_isFacingRight) {
 				Flip ();
 			}
 
-		} else if (Input.GetKey (KeyCode.A)) {
+		} else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) {
 			_normalizedHorizontalSpeed = -1;
 			if (_isFacingRight) {
 				Flip ();
@@ -70,14 +82,14 @@ public class Player : MonoBehaviour
 			_normalizedHorizontalSpeed = 0;
 		}
 
-		if (_controller.CanJump && Input.GetKey (KeyCode.Space)) {
+		if (_controller.CanJump && Input.GetKeyDown (KeyCode.Space)) {
 			_controller.Jump();
 		}
 	}
 
 	private void Flip(){
-		transform.localScale = new Vector3 (-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-		_isFacingRight = transform.localScale.x > 0;
+        PlayerBody.transform.localScale = new Vector3 (-PlayerBody.transform.localScale.x, PlayerBody.transform.localScale.y, PlayerBody.transform.localScale.z);
+        _isFacingRight = PlayerBody.transform.localScale.x > 0;
 	}
 
     private void HandlePlatformRotation()

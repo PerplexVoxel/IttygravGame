@@ -41,6 +41,8 @@ public class CharacterController2D : MonoBehaviour
 	private float _jumpIn;
 	private GameObject _lastStandingOn;
 
+    public bool MotionFrozen = false;
+
 	private Vector3
 		_activeGlobalPlatformPoint,
 		_activeLocalPlatformPoint;
@@ -102,7 +104,7 @@ public class CharacterController2D : MonoBehaviour
         //Debug.Log("Gravity: " + gravity);
         //_velocity.y += -25 * Time.deltaTime;
 
-        Move (Velocity * Time.deltaTime);
+        if(!MotionFrozen) Move (Velocity * Time.deltaTime);
 	}
 
     float xx = 1;
@@ -353,10 +355,10 @@ public class CharacterController2D : MonoBehaviour
 	
     private void CheckPlatform(Transform platform)
     {
-        if (platform.eulerAngles.z != transform.eulerAngles.z)
-        {
-            RotatePlayer(platform.eulerAngles.z);
-        }
+        //if (platform.eulerAngles.z != transform.eulerAngles.z)
+        //{
+        //    RotatePlayer(platform.eulerAngles.z);
+        //}
 
         if (platform.tag == "Platform090") RotatePlayer(90);
         else if (platform.tag == "Platform135") RotatePlayer(135);
@@ -365,7 +367,7 @@ public class CharacterController2D : MonoBehaviour
         else if (platform.tag == "Platform270") RotatePlayer(270);
         else if (platform.tag == "Platform315") RotatePlayer(315);
         else if (platform.tag == "Platform000") RotatePlayer(0);
-        else if (platform.tag == "Platform45") RotatePlayer(45);
+        else if (platform.tag == "Platform045") RotatePlayer(45);
     }
 
 	public void OnTriggerEnter2D(Collider2D other)
