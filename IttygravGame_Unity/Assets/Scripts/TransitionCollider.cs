@@ -12,23 +12,28 @@ public class TransitionCollider : MonoBehaviour {
 	void Start () {
         x = this.GetComponent<BoxCollider2D>().size.y / (2 + Mathf.Sqrt(2));
         y = this.GetComponent<BoxCollider2D>().size.y - ((2 * this.GetComponent<BoxCollider2D>().size.y) / (2 + Mathf.Sqrt(2)));
-
+        Debug.Log(x.ToString());
+        Debug.Log(y.ToString());
         CooridinateMatrix = new Vector3[16,2]; //[x,y] x = position, y:0 = origin of ray, y:1 = direction of ray
-        
-        CooridinateMatrix[0, 0] = new Vector3(-(y / 2) - (x / 3), -(y / 2) - (x * (2 / 3)));
-        CooridinateMatrix[0, 1] = new Vector3(-(y / 2) - (x / 3) - collisionDistance, -(y / 2) - (x * (2 / 3)) - collisionDistance);
 
-        CooridinateMatrix[1, 0] = new Vector3(-(y / 6), -(y / 2) - x);
-        CooridinateMatrix[1, 1] = new Vector3(-(y / 6), -(y / 2) - x - collisionDistance);
+        float test = -(y / 2f) - (x * (2f / 3f));
+        Debug.Log(test.ToString());
+        CooridinateMatrix[0, 0] = new Vector3(-(y / 2f) - (x / 3f), -(y / 2f) - (x * (2f / 3f)));
+        CooridinateMatrix[0, 1] = new Vector3(-(y / 2f) - (x / 3f) - collisionDistance, -(y / 2f) - (x * (2f / 3f)) - collisionDistance);
+        Debug.Log(CooridinateMatrix[0, 0].y.ToString());
 
-        CooridinateMatrix[2, 0] = new Vector3((y / 6), -(y / 2) - x);
-        CooridinateMatrix[2, 1] = new Vector3((y / 6), (-(y / 2) - x  -collisionDistance));
 
-        CooridinateMatrix[3, 0] = new Vector3((y / 2) + (x / 3), -(y / 2) - (x * (2 / 3)));
-        CooridinateMatrix[3, 1] = new Vector3((y / 2) + (x / 3) + collisionDistance, -(y / 2) - (x * (2 / 3)) - collisionDistance);
+        CooridinateMatrix[1, 0] = new Vector3(-(y / 6f), -(y / 2f) - x);
+        CooridinateMatrix[1, 1] = new Vector3(0, -(y / 2f) - x - collisionDistance);
 
-        CooridinateMatrix[4, 0] = new Vector3((y / 2) + (x * (2 / 3)), -(y / 2) - (x / 3));
-        CooridinateMatrix[4, 1] = new Vector3((y / 2) + (x * (2 / 3)) + collisionDistance, -(y / 2) - (x / 3) - collisionDistance);
+        CooridinateMatrix[2, 0] = new Vector3((y / 6f), -(y / 2f) - x);
+        CooridinateMatrix[2, 1] = new Vector3(0, (-(y / 2f) - x  -collisionDistance));
+
+        CooridinateMatrix[3, 0] = new Vector3((y / 2f) + (x / 3f), -(y / 2f) - (x * (2 / 3f)));
+        CooridinateMatrix[3, 1] = new Vector3((y / 2f) + (x / 3f) + collisionDistance, -(y / 2f) - (x * (2f / 3f)) - collisionDistance);
+
+        CooridinateMatrix[4, 0] = new Vector3((y / 2f) + (x * (2f / 3f)), -(y / 2f) - (x / 3f));
+        CooridinateMatrix[4, 1] = new Vector3((y / 2f) + (x * (2f / 3f)) + collisionDistance, -(y / 2f) - (x / 3f) - collisionDistance);
 
         CooridinateMatrix[5, 0] = new Vector3((y / 2) + x, -(y / 6));
         CooridinateMatrix[5, 1] = new Vector3((y / 2) + x + collisionDistance, -(y / 6));
@@ -72,8 +77,10 @@ public class TransitionCollider : MonoBehaviour {
 
 
         //Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[2, 0], this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[2, 1], Color.blue);
-        Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[0, 0], this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[0, 1], Color.red);
-
+        Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[0, 0], CooridinateMatrix[0, 1], Color.red);
+        Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[1, 0], CooridinateMatrix[1, 1], Color.red);
+        Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[2, 0], CooridinateMatrix[2, 1], Color.red);
+        Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[3, 0], CooridinateMatrix[3, 1], Color.red);
 
 
     }
