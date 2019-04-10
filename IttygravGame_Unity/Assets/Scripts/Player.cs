@@ -20,6 +20,8 @@ public class Player : MonoBehaviour
 
     public GameObject PlayerBody;
 
+    public AudioClip JumpAudio;
+
 	public void Awake()
 	{
 		_controller = GetComponent<CharacterController2D> ();
@@ -84,6 +86,9 @@ public class Player : MonoBehaviour
 
 		if (_controller.CanJump && Input.GetKeyDown (KeyCode.Space)) {
 			_controller.Jump();
+
+            GetComponent<AudioSource>().clip = JumpAudio;
+            GetComponent<AudioSource>().Play();
 		}
 	}
 
