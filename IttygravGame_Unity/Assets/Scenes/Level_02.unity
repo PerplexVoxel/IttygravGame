@@ -1014,7 +1014,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4615226327381794, guid: 74c99b41c91ac1042ad8531e678fdb5f, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 12.8
+      value: 12.902
       objectReference: {fileID: 0}
     - target: {fileID: 4615226327381794, guid: 74c99b41c91ac1042ad8531e678fdb5f, type: 2}
       propertyPath: m_LocalPosition.y
@@ -1731,7 +1731,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4615226327381794, guid: 74c99b41c91ac1042ad8531e678fdb5f, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 5.02
+      value: 5.25
       objectReference: {fileID: 0}
     - target: {fileID: 4615226327381794, guid: 74c99b41c91ac1042ad8531e678fdb5f, type: 2}
       propertyPath: m_LocalPosition.y
@@ -1764,6 +1764,14 @@ Prefab:
     - target: {fileID: 1578903913201430, guid: 74c99b41c91ac1042ad8531e678fdb5f, type: 2}
       propertyPath: m_Name
       value: Lazer (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4706465529576858, guid: 74c99b41c91ac1042ad8531e678fdb5f, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -1.51
+      objectReference: {fileID: 0}
+    - target: {fileID: 4706465529576858, guid: 74c99b41c91ac1042ad8531e678fdb5f, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0.02
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 74c99b41c91ac1042ad8531e678fdb5f, type: 2}
@@ -2541,7 +2549,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4595412425859490, guid: 27eab0cc731df457d91475fdd4d981cb, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 4.93
+      value: 5.22
       objectReference: {fileID: 0}
     - target: {fileID: 4595412425859490, guid: 27eab0cc731df457d91475fdd4d981cb, type: 2}
       propertyPath: m_LocalPosition.y
