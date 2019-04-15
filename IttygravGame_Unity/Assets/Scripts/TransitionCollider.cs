@@ -12,61 +12,61 @@ public class TransitionCollider : MonoBehaviour {
 	void Start () {
         x = this.GetComponent<BoxCollider2D>().size.y / (2 + Mathf.Sqrt(2));
         y = this.GetComponent<BoxCollider2D>().size.y - ((2 * this.GetComponent<BoxCollider2D>().size.y) / (2 + Mathf.Sqrt(2)));
+        float xOneThird = (y / 2f) + (x * (1f / 3f));
+        float xTwoThird = (y / 2f) + (x * (2f / 3f));
+        float xHalfY = x + (y / 2f);
+        float yOneSixth = (y / 6);
         Debug.Log(x.ToString());
         Debug.Log(y.ToString());
         CooridinateMatrix = new Vector3[16,2]; //[x,y] x = position, y:0 = origin of ray, y:1 = direction of ray
 
-        float test = -(y / 2f) - (x * (2f / 3f));
-        Debug.Log(test.ToString());
-        CooridinateMatrix[0, 0] = new Vector3(-(y / 2f) - (x / 3f), -(y / 2f) - (x * (2f / 3f)));
-        CooridinateMatrix[0, 1] = new Vector3(-(y / 2f) - (x / 3f) - collisionDistance, -(y / 2f) - (x * (2f / 3f)) - collisionDistance);
-        Debug.Log(CooridinateMatrix[0, 0].y.ToString());
+        CooridinateMatrix[0, 0] = new Vector3(-xOneThird, -xTwoThird);
+        CooridinateMatrix[0, 1] = new Vector3(-xOneThird /*- collisionDistance*/, -xTwoThird /*- collisionDistance*/);
 
+        CooridinateMatrix[1, 0] = new Vector3(-yOneSixth, -xHalfY);
+        CooridinateMatrix[1, 1] = new Vector3(0, -xHalfY -collisionDistance);
 
-        CooridinateMatrix[1, 0] = new Vector3(-(y / 6f), -(y / 2f) - x);
-        CooridinateMatrix[1, 1] = new Vector3(0, -(y / 2f) - x - collisionDistance);
+        CooridinateMatrix[2, 0] = new Vector3(yOneSixth, -xHalfY);
+        CooridinateMatrix[2, 1] = new Vector3(0, -xHalfY -collisionDistance);
 
-        CooridinateMatrix[2, 0] = new Vector3((y / 6f), -(y / 2f) - x);
-        CooridinateMatrix[2, 1] = new Vector3(0, (-(y / 2f) - x  -collisionDistance));
+        CooridinateMatrix[3, 0] = new Vector3(xOneThird, -xTwoThird);
+        CooridinateMatrix[3, 1] = new Vector3(xOneThird + collisionDistance, -xTwoThird - collisionDistance);
 
-        CooridinateMatrix[3, 0] = new Vector3((y / 2f) + (x / 3f), -(y / 2f) - (x * (2 / 3f)));
-        CooridinateMatrix[3, 1] = new Vector3((y / 2f) + (x / 3f) + collisionDistance, -(y / 2f) - (x * (2f / 3f)) - collisionDistance);
+        CooridinateMatrix[4, 0] = new Vector3(xTwoThird, -xOneThird);
+        CooridinateMatrix[4, 1] = new Vector3(xTwoThird + collisionDistance, -xOneThird - collisionDistance);
 
-        CooridinateMatrix[4, 0] = new Vector3((y / 2f) + (x * (2f / 3f)), -(y / 2f) - (x / 3f));
-        CooridinateMatrix[4, 1] = new Vector3((y / 2f) + (x * (2f / 3f)) + collisionDistance, -(y / 2f) - (x / 3f) - collisionDistance);
+        CooridinateMatrix[5, 0] = new Vector3(xHalfY, -yOneSixth);
+        CooridinateMatrix[5, 1] = new Vector3(xHalfY + collisionDistance, 0);
 
-        CooridinateMatrix[5, 0] = new Vector3((y / 2) + x, -(y / 6));
-        CooridinateMatrix[5, 1] = new Vector3((y / 2) + x + collisionDistance, -(y / 6));
+        CooridinateMatrix[6, 0] = new Vector3(xHalfY, yOneSixth);
+        CooridinateMatrix[6, 1] = new Vector3(xHalfY + collisionDistance, 0);
 
-        CooridinateMatrix[6, 0] = new Vector3((y / 2) + x, (y / 6));
-        CooridinateMatrix[6, 1] = new Vector3((y / 2) + x + collisionDistance, (y / 6));
+        CooridinateMatrix[7, 0] = new Vector3(xTwoThird, xOneThird);
+        CooridinateMatrix[7, 1] = new Vector3(xTwoThird + collisionDistance, xOneThird + collisionDistance);
 
-        CooridinateMatrix[7, 0] = new Vector3((y / 2) + (x * (2 / 3)), (y / 2) + (x / 3));
-        CooridinateMatrix[7, 1] = new Vector3((y / 2) + (x * (2 / 3)) + collisionDistance, (y / 2) + (x / 3) + collisionDistance);
+        CooridinateMatrix[8, 0] = new Vector3(xOneThird, xTwoThird);
+        CooridinateMatrix[8, 1] = new Vector3(xOneThird + collisionDistance, xTwoThird + collisionDistance);
 
-        CooridinateMatrix[8, 0] = new Vector3((y / 2) + (x / 3), (y / 2) + (x * (2 / 3)));
-        CooridinateMatrix[8, 1] = new Vector3((y / 2) + (x / 3) + collisionDistance, (y / 2) + (x * (2 / 3)) + collisionDistance);
+        CooridinateMatrix[9, 0] = new Vector3(yOneSixth, xHalfY);
+        CooridinateMatrix[9, 1] = new Vector3(0, xHalfY + collisionDistance);
 
-        CooridinateMatrix[9, 0] = new Vector3((y / 6), (y / 2) + x);
-        CooridinateMatrix[9, 1] = new Vector3((y / 6), (y / 2) + x + collisionDistance);
+        CooridinateMatrix[10, 0] = new Vector3(-yOneSixth, xHalfY);
+        CooridinateMatrix[10, 1] = new Vector3(0, xHalfY + collisionDistance);
 
-        CooridinateMatrix[10, 0] = new Vector3(-(y / 6), (y / 2) + x);
-        CooridinateMatrix[10, 1] = new Vector3(-(y / 6), (y / 2) + x + collisionDistance);
+        CooridinateMatrix[11, 0] = new Vector3(-xOneThird, xTwoThird);
+        CooridinateMatrix[11, 1] = new Vector3(-xOneThird - collisionDistance, xTwoThird + collisionDistance);
 
-        CooridinateMatrix[11, 0] = new Vector3(-(y / 2) - (x / 3), (y / 2) + (x * (2 / 3)));
-        CooridinateMatrix[11, 1] = new Vector3(-(y / 2) - (x / 3) - collisionDistance, (y / 2) + (x * (2 / 3)) + collisionDistance);
+        CooridinateMatrix[12, 0] = new Vector3(-xTwoThird, xOneThird);
+        CooridinateMatrix[12, 1] = new Vector3(-xTwoThird - collisionDistance, xOneThird + collisionDistance);
 
-        CooridinateMatrix[12, 0] = new Vector3(-(y / 2) - (x * (2 / 3)), (y / 2) + (x / 3));
-        CooridinateMatrix[12, 1] = new Vector3(-(y / 2) - (x * (2 / 3)) - collisionDistance, (y / 2) + (x / 3) + collisionDistance);
+        CooridinateMatrix[13, 0] = new Vector3(-xHalfY, yOneSixth);
+        CooridinateMatrix[13, 1] = new Vector3(-xHalfY - collisionDistance, 0);
 
-        CooridinateMatrix[13, 0] = new Vector3(-(y / 2) - x, (y / 6));
-        CooridinateMatrix[13, 1] = new Vector3(-(y / 2) - x - collisionDistance, (y / 6));
+        CooridinateMatrix[14, 0] = new Vector3(-xHalfY, -yOneSixth);
+        CooridinateMatrix[14, 1] = new Vector3(-xHalfY - collisionDistance, 0);
 
-        CooridinateMatrix[14, 0] = new Vector3(-(y / 2) - x, -(y / 6));
-        CooridinateMatrix[14, 1] = new Vector3(-(y / 2) - x - collisionDistance, -(y / 6));
-
-        CooridinateMatrix[15, 0] = new Vector3(-(y / 2) - (x * (2 / 3)), -(y / 2) - (x / 3));
-        CooridinateMatrix[15, 1] = new Vector3(-(y / 2) - (x * (2 / 3)) - collisionDistance, -(y / 2) - (x / 3) - collisionDistance);
+        CooridinateMatrix[15, 0] = new Vector3(-xTwoThird, -xOneThird);
+        CooridinateMatrix[15, 1] = new Vector3(-xTwoThird - collisionDistance, -xOneThird - collisionDistance);
 
     }
 
@@ -74,15 +74,22 @@ public class TransitionCollider : MonoBehaviour {
     private void FixedUpdate()
     {
 
-
-
-        //Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[2, 0], this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[2, 1], Color.blue);
         Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[0, 0], CooridinateMatrix[0, 1], Color.red);
         Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[1, 0], CooridinateMatrix[1, 1], Color.red);
         Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[2, 0], CooridinateMatrix[2, 1], Color.red);
         Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[3, 0], CooridinateMatrix[3, 1], Color.red);
-
-
+        Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[4, 0], CooridinateMatrix[4, 1], Color.red);
+        Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[5, 0], CooridinateMatrix[5, 1], Color.red);
+        Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[6, 0], CooridinateMatrix[6, 1], Color.red);
+        Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[7, 0], CooridinateMatrix[7, 1], Color.red);
+        Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[8, 0], CooridinateMatrix[8, 1], Color.red);
+        Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[9, 0], CooridinateMatrix[9, 1], Color.red);
+        Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[10, 0], CooridinateMatrix[10, 1], Color.red);
+        Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[11, 0], CooridinateMatrix[11, 1], Color.red);
+        Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[12, 0], CooridinateMatrix[12, 1], Color.red);
+        Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[13, 0], CooridinateMatrix[13, 1], Color.red);
+        Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[14, 0], CooridinateMatrix[14, 1], Color.red);
+        Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[15, 0], CooridinateMatrix[15, 1], Color.red);
     }
 
 }
