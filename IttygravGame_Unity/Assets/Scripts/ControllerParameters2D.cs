@@ -13,6 +13,7 @@ public class ControllerParameters2D : Parameters2D
 	}
 
 	public Vector2 MaxVelocity = new Vector2 (float.MaxValue, float.MaxValue);
+    public float BoxNormalForce = 10f;
 
 	[Range(0,90)]
 	public float SlopeLimit = 30;

@@ -21,6 +21,7 @@ public class LevelHandler : MonoBehaviour {
     public float ButtonStart = -15;
     public float ButtonSpacing = -40;
     public GameObject MenuPanel;
+    public GameObject ScrollView;
     public GameObject LevelButtonPrefab;
     private bool displayMenu = false;
 
@@ -70,14 +71,15 @@ public class LevelHandler : MonoBehaviour {
 
         for(int i = 0; i < Levels.Length; i+=1)
         {
-            GameObject btnObject = GameObject.Instantiate(LevelButtonPrefab, MenuPanel.transform.position, Quaternion.identity);
+            GameObject btnObject = GameObject.Instantiate(LevelButtonPrefab, ScrollView.transform.position, Quaternion.identity);
             btnObject.transform.GetChild(0).GetComponent<Text>().text = Levels[i].LevelTitle;
-            btnObject.transform.SetParent(MenuPanel.transform);
-            float PosY = ButtonStart + ButtonSpacing * i + MenuPanel.GetComponent<RectTransform>().rect.height / 2;
+            btnObject.transform.SetParent(ScrollView.transform);
+            float PosY = ButtonStart + ButtonSpacing * i + ScrollView.GetComponent<RectTransform>().rect.height / 2;
             btnObject.GetComponent<RectTransform>().localPosition = new Vector3(0, PosY ,0);
             Levels[i].SetButton(btnObject.GetComponent<Button>());
             
         }
+        LevelButtonPrefab.SetActive(false);
     }
 
     private void Update()

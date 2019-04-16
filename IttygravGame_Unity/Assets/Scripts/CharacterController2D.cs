@@ -284,7 +284,9 @@ public class CharacterController2D : MonoBehaviour
             {
                 //Debug.Log("Box collision");
                 CrateController2D crate = rayCastHit.transform.gameObject.GetComponent<CrateController2D>();
-                collisionDistance.x = Mathf.Sign(collisionDistance.x)*Vector3.Magnitude( crate.Move(mapToPlayerOrientation(new Vector2(deltaMovement.x, 0)), Parameters.Mass));
+                Vector2 playerNormal = -transform.up; // mapToPlayerOrientation(-transform.up);
+                //Debug.Log(playerNormal.ToString());
+                collisionDistance.x = Mathf.Sign(collisionDistance.x)*Vector3.Magnitude( crate.Move(mapToPlayerOrientation(new Vector2(deltaMovement.x, 0)), Parameters.Mass, Parameters.BoxNormalForce * playerNormal));
 
             }
 
