@@ -25,7 +25,8 @@ public class Player : MonoBehaviour
 	public void Awake()
 	{
 		_controller = GetComponent<CharacterController2D> ();
-		_isFacingRight = transform.localScale.x > 0; 			//assuming right is default
+		_isFacingRight = transform.localScale.x > 0; 
+        //assuming right is default
 	}
 
 	public void Update()
@@ -87,8 +88,9 @@ public class Player : MonoBehaviour
 		if (_controller.CanJump && Input.GetKeyDown (KeyCode.Space)) {
 			_controller.Jump();
 
-            GetComponent<AudioSource>().clip = JumpAudio;
-            GetComponent<AudioSource>().Play();
+            //GetComponent<AudioSource>().clip = JumpAudio;
+            //GetComponent<AudioSource>().Play();
+            GameObject.FindGameObjectWithTag("AudioSource").GetComponent<AudioController>().PlayPlayerFX(0);
 		}
 	}
 
