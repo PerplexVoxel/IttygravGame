@@ -7,6 +7,12 @@ public class CameraController : MonoBehaviour {
     public float RotationSmoothing = 10;
     public float FollowSmoothing = 10;
     public Vector2 FollowOffset;
+
+    public GameObject AttensionArrow;
+    public GameObject Lever;
+
+    public LayerMask CameraMask;
+    public bool DisplayArrow = true;
 	// Use this for initialization
 	void Start () {
 		
@@ -23,19 +29,74 @@ public class CameraController : MonoBehaviour {
 
         //rotate camera
         transform.rotation = Quaternion.RotateTowards(transform.rotation, Player.transform.rotation, RotationSmoothing * Time.deltaTime);
+
+
+        //
+        if (DisplayArrow)
+        {
+            handleAttensionArrow();
+            //AttensionArrow.SetActive(true);
+        }
+        else
+        {
+            AttensionArrow.SetActive(false);
+        }
+        
+        
         
         
 	}
-}
-/*
-            xx = Mathf.Cos(angle);
-            xy = Mathf.Sin(angle);
-            yx = Mathf.Cos(angle2);
-            yy = Mathf.Sin(angle2);
+    float radius = 2;
+    void handleAttensionArrow()
+    {
+        if (AttensionArrow)
+        {
+            float y = Lever.transform.position.y;
+            float x = Lever.transform.position.x;
 
-            lastPlayerAngle = transform.eulerAngles.z;
+            y = y - Player.transform.position.y;
+            x = x - Player.transform.position.x;
+
+            float zRot = Mathf.Atan(y / x) * 180 / Mathf.PI;
+
+            //AttensionArrow.transform.eulerAngles = new Vector3(0, 0, zRot);
+            AttensionArrow.transform.right = new Vector2(x, y);
+
+            //calculate distance
+            var rayVector = (Vector2)Player.transform.position;
+            var rayDirection = new Vector2(x, y);
+
+            Debug.DrawRay(rayVector, rayDirection);
+
+            //LayerMask cameraScreen = LayerMask.NameToLayer("Camera");
+
+            var raycastHit = Physics2D.Raycast(rayVector, rayDirection, 100, CameraMask);
+            if (raycastHit)
+            {
+                float edgeY = raycastHit.point.y;
+                float edgeX = raycastHit.point.x;
+                radius = Mathf.Sin(zRot * Mathf.PI / 180) / edgeY;
+                //Debug.Log(raycastHit.transform.name + "(" + edgeX + ", " + edgeY + ")");
+
+                AttensionArrow.transform.position = new Vector3(edgeX, edgeY, 0);
+
+                if(Vector3.Distance(Player.transform.position, new Vector3(edgeX, edgeY, 0)) > Vector3.Distance(Player.transform.position, Lever.transform.position))
+                {
+                    AttensionArrow.gameObject.SetActive(false);
+                }
+                else
+                {
+                    AttensionArrow.gameObject.SetActive(true);
+                }
+
+            }
+            //offset = isRight ? ((raycastHit.point.x - _transform.position.x) - halfWidth) : (halfWidth - (_transform.position.x - raycastHit.point.x));
+
+
+            //float arrowY = Player.transform.position.y + radius * Mathf.Sin(zRot * Mathf.PI / 180);
+            //float arrowX = Player.transform.position.x + radius * Mathf.Cos(zRot * Mathf.PI / 180);
+
+            //AttensionArrow.transform.position = new Vector3(arrowX, arrowY, 0);
         }
-
-
-        return new Vector2(adjustingVector.x* xx + adjustingVector.y* yx, adjustingVector.x* xy + adjustingVector.y* yy);
-        */
+    }
+}
