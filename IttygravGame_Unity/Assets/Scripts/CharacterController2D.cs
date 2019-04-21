@@ -9,6 +9,9 @@ public class CharacterController2D : MonoBehaviour
 
 	private static readonly float SlopeLimitTangent = Mathf.Tan (75f * Mathf.Deg2Rad);
 
+    private float slantX;
+    private float slantY;
+
 	public LayerMask PlatformMask; 
 	public ControllerParameters2D DefaultParameters;
 
@@ -70,8 +73,16 @@ public class CharacterController2D : MonoBehaviour
 		var colliderHeight = _boxCollider.size.y * Mathf.Abs (transform.localScale.y) - (2 * SkinWidth);
 		_verticalDistanceBetweenRays = colliderHeight / (TotalHorizontalRays - 1);
 
+        calcSlant();
 	}
-	public void AddForce(Vector2 force)
+    public void calcSlant()
+    {
+        slantX = this.GetComponent<BoxCollider2D>().size.y / (2 + Mathf.Sqrt(2));
+        slantY = this.GetComponent<BoxCollider2D>().size.y - ((2 * this.GetComponent<BoxCollider2D>().size.y) / (2 + Mathf.Sqrt(2)));
+    }
+
+
+    public void AddForce(Vector2 force)
 	{
 		_velocity += force;
 	}
@@ -208,8 +219,9 @@ public class CharacterController2D : MonoBehaviour
 	private void CorrectHorizontalPlacement(ref Vector2 deltaMovement, bool isRight){
 		var halfWidth = (_boxCollider.size.x * _localScale.x) / 2f;
 		var rayOrigin = isRight ? _raycastBottomRight : _raycastBottomLeft;
+        int direction = isRight ? 1 : -1;
 
-		if (isRight) {
+        if (isRight) {
 			
             rayOrigin = rayOrigin - (Vector3) mapToPlayerOrientation(new Vector2(halfWidth - SkinWidth, 0));
         }
@@ -222,13 +234,22 @@ public class CharacterController2D : MonoBehaviour
 
 		var rayDirection = isRight ? transform.right : -transform.right;
 		var offset = 0f;
-        
 
+        float iset;
 		for (var i = 1; i < TotalHorizontalRays -1; i++){
-            
-            var rayVector = (Vector2)rayOrigin + mapToPlayerOrientation(deltaMovement) + mapToPlayerOrientation(new Vector2(0, i * _verticalDistanceBetweenRays));
 
-            //Debug.DrawRay(rayVector, rayDirection * halfWidth, isRight ? Color.cyan : Color.magenta);
+            iset = i * _verticalDistanceBetweenRays;
+            var rayVector = new Vector2();
+
+            if (iset < slantX)
+            {
+                rayVector = (Vector2)rayOrigin + mapToPlayerOrientation(deltaMovement) + mapToPlayerOrientation(new Vector2(-iset * direction, i * _verticalDistanceBetweenRays));
+            }
+            else
+            {
+                rayVector = (Vector2)rayOrigin + mapToPlayerOrientation(deltaMovement) + mapToPlayerOrientation(new Vector2(0, i * _verticalDistanceBetweenRays));
+            }
+            Debug.DrawRay(rayVector, rayDirection * halfWidth, isRight ? Color.cyan : Color.magenta);
 
             var raycastHit = Physics2D.Raycast(rayVector, rayDirection, halfWidth, PlatformMask);
 			if(!raycastHit){
