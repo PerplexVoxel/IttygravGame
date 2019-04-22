@@ -39,8 +39,12 @@ public class leverScript : MonoBehaviour {
 
     private void trigger(bool isTriggered)
     {
-        if (!lh) lh = GameObject.FindGameObjectWithTag("LevelHandler").GetComponent<LevelHandler>();
-        lh.LeverTriggered(isTriggered);
+        if (GameObject.FindGameObjectWithTag("LevelHandler"))
+        {
+            if (!lh) lh = GameObject.FindGameObjectWithTag("LevelHandler").GetComponent<LevelHandler>();
+            lh.LeverTriggered(isTriggered);
+        }
+        
         
     }
     
