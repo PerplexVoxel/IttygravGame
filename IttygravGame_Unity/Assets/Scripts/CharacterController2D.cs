@@ -5,7 +5,7 @@ public class CharacterController2D : MonoBehaviour
 {
 	private const float SkinWidth = 0.02f;
 	private const int TotalHorizontalRays = 8;
-	private const int TotalVerticalRays = 4;
+	private const int TotalVerticalRays = 8;
 
 	private static readonly float SlopeLimitTangent = Mathf.Tan (75f * Mathf.Deg2Rad);
 
@@ -32,7 +32,7 @@ public class CharacterController2D : MonoBehaviour
 	}
 
 	public bool HandleCollisions { get; set; }
-	public ControllerParameters2D Parameters { get { return _overrideParameters ?? DefaultParameters; } }
+	public ControllerParameters2D Parameters { get { return /*_overrideParameters ??*/ DefaultParameters; } }
 	public GameObject StandingOn{ get; private set; }
 	public Vector3 PlatformVelocity { get; private set; }
 
@@ -353,12 +353,32 @@ public class CharacterController2D : MonoBehaviour
         var rayDirection = isGoingUp ? transform.up : -transform.up;
 		var rayOrigin = isGoingUp ? _raycastTopLeft : _raycastBottomLeft;
 
-		
 
-		
+
+        float iset;
 		for (var i = 0; i < TotalVerticalRays; i++) {
             //var rayVector = new Vector2(rayOrigin.x + (i * _horizontalDistanceBetweenRays), rayOrigin.y);
-            Vector2 rayVector = new Vector2(rayOrigin.x, rayOrigin.y) + mapToPlayerOrientation(new Vector2( (i * _horizontalDistanceBetweenRays), 0));// + (Vector2)_transform.position;
+            iset = i * _horizontalDistanceBetweenRays;
+            Vector2 rayVector;
+
+            if (!isGoingUp){
+                if (iset < slantX)
+                {
+                    rayVector = new Vector2(rayOrigin.x, rayOrigin.y) + mapToPlayerOrientation(new Vector2((i * _horizontalDistanceBetweenRays), slantX - iset));// + (Vector2)_transform.position;
+                }
+                else if(iset > (slantX + slantY))
+                {
+                    rayVector = new Vector2(rayOrigin.x, rayOrigin.y) + mapToPlayerOrientation(new Vector2((i * _horizontalDistanceBetweenRays), (iset - (slantX + slantY))));// + (Vector2)_transform.position;
+                }
+                else
+                {
+                    rayVector = new Vector2(rayOrigin.x, rayOrigin.y) + mapToPlayerOrientation(new Vector2((i * _horizontalDistanceBetweenRays), 0));// + (Vector2)_transform.position;
+                }
+            }
+            else
+            {
+                rayVector = new Vector2(rayOrigin.x, rayOrigin.y) + mapToPlayerOrientation(new Vector2((i * _horizontalDistanceBetweenRays), 0));// + (Vector2)_transform.position;
+            }
             Debug.DrawRay (rayVector, rayDirection * rayDistance, Color.green);
 
 			var raycastHit = Physics2D.Raycast(rayVector, rayDirection, rayDistance, PlatformMask);
