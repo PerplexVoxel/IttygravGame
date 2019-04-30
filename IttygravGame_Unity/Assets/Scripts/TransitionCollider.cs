@@ -107,6 +107,7 @@ public class TransitionCollider : MonoBehaviour {
                 }
                 Debug.Log(positionOffset[i]);
             }
+            this.GetComponent<CharacterController2D>().CheckPlatform(1);
             locked = true;
         }
         else{
@@ -123,6 +124,7 @@ public class TransitionCollider : MonoBehaviour {
                 }
                 Debug.Log(positionOffset[i]);
             }
+            this.GetComponent<CharacterController2D>().CheckPlatform(-1);
             locked = true;
         }
     }

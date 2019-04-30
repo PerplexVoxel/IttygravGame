@@ -11,6 +11,7 @@ public class CharacterController2D : MonoBehaviour
 
     private float slantX;
     private float slantY;
+    private int currentAngle;
 
 	public LayerMask PlatformMask; 
 	public ControllerParameters2D DefaultParameters;
@@ -385,7 +386,7 @@ public class CharacterController2D : MonoBehaviour
 			if (!raycastHit)
 				continue;
 
-            if(raycastHit.transform.gameObject.layer == LayerMask.NameToLayer("Platform")) CheckPlatform(raycastHit.transform);
+            //if(raycastHit.transform.gameObject.layer == LayerMask.NameToLayer("Platform")) CheckPlatform(raycastHit.transform);
             //CheckPlatform(raycastHit.transform);
 
 
@@ -413,21 +414,37 @@ public class CharacterController2D : MonoBehaviour
 		}
 	}
 	
-    private void CheckPlatform(Transform platform)
+    public void CheckPlatform(int direction)
     {
         //if (platform.eulerAngles.z != transform.eulerAngles.z)
         //{
         //    RotatePlayer(platform.eulerAngles.z);
         //}
 
-        if (platform.tag == "Platform090") RotatePlayer(90);
+        if (direction > 0)
+        {
+            currentAngle = currentAngle + 45;
+            if (currentAngle >= 360)
+                currentAngle -= 360;
+
+            RotatePlayer(currentAngle);
+        }
+        else
+        {
+            currentAngle = currentAngle - 45;
+            if (currentAngle < 0)
+                currentAngle += 360;
+
+            RotatePlayer(currentAngle);
+        }
+        /*if (platform.tag == "Platform090") RotatePlayer(90);
         else if (platform.tag == "Platform135") RotatePlayer(135);
         else if (platform.tag == "Platform180") RotatePlayer(180);
         else if (platform.tag == "Platform225") RotatePlayer(225);
         else if (platform.tag == "Platform270") RotatePlayer(270);
         else if (platform.tag == "Platform315") RotatePlayer(315);
         else if (platform.tag == "Platform000") RotatePlayer(0);
-        else if (platform.tag == "Platform045") RotatePlayer(45);
+        else if (platform.tag == "Platform045") RotatePlayer(45);*/
     }
 
 	public void OnTriggerEnter2D(Collider2D other)
