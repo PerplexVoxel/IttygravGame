@@ -8,15 +8,17 @@ public class TransitionCollider : MonoBehaviour {
     private float y; // ^^                                                  ^^
     private Vector3[,] CooridinateMatrix; //This holds the transformations for the collider
     private int[] positionOffset = new int[] { 0, 1, 2, 3 };
-	// Use this for initialization
+	private bool locked;
+    
+    // Use this for initialization
 	void Start () {
         calcRayMatrix();
-        transition(1);
+        locked = false;
     }
 
     private void FixedUpdate()
     {
-
+        checkCollision();
         Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[positionOffset[0], 0], CooridinateMatrix[positionOffset[0], 1], Color.red);
         Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[positionOffset[1], 0], CooridinateMatrix[positionOffset[1], 1], Color.red);
         Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[positionOffset[2], 0], CooridinateMatrix[positionOffset[2], 1], Color.red);
@@ -105,6 +107,7 @@ public class TransitionCollider : MonoBehaviour {
                 }
                 Debug.Log(positionOffset[i]);
             }
+            locked = true;
         }
         else{
             for (int i = 0; i < 4; i++)
@@ -120,8 +123,41 @@ public class TransitionCollider : MonoBehaviour {
                 }
                 Debug.Log(positionOffset[i]);
             }
+            locked = true;
         }
     }
 
+    private void checkCollision()
+    {
+        if (locked == false)
+        {
+            float dis0, dis1, dis2, dis3;
 
+            dis0 = Physics2D.Raycast(CooridinateMatrix[positionOffset[0], 0], CooridinateMatrix[positionOffset[0], 1]).distance;
+            dis1 = Physics2D.Raycast(CooridinateMatrix[positionOffset[1], 0], CooridinateMatrix[positionOffset[1], 1]).distance;
+            dis2 = Physics2D.Raycast(CooridinateMatrix[positionOffset[2], 0], CooridinateMatrix[positionOffset[2], 1]).distance;
+            dis3 = Physics2D.Raycast(CooridinateMatrix[positionOffset[3], 0], CooridinateMatrix[positionOffset[3], 1]).distance;
+
+            if (dis0 == 0)
+            {
+                transition(1);
+            }
+            else if (dis3 == 0)
+            {
+                transition(-1);
+            }
+            else if (dis1 > dis0 && dis1 != dis2)
+            {
+                transition(-1);
+            }
+            else if (dis2 > dis3 && dis1 != dis2)
+            {
+                transition(1);
+            }
+        }
+        else
+        {
+            locked = false;
+        }
+    }
 }
