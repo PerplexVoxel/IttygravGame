@@ -30,6 +30,10 @@ public class LevelHandler : MonoBehaviour {
     public bool ShowMiniMap = true;
     private GameObject miniMap;
 
+    public Button[] WinningButtons;
+    public RawImage WinningButtonSelectedHighlight;
+    private int currentButtonSelected = 0; //0 for Next Level, 1 for Repeat Level
+
     // called first
     void OnEnable()
     {
@@ -44,6 +48,8 @@ public class LevelHandler : MonoBehaviour {
         Text levelTitleText = null;
         if(LevelTitle ) levelTitleText = LevelTitle.transform.GetChild(0).GetComponent<Text>();
         if(levelTitleText) levelTitleText.text = LevelName;
+
+
 
         if(MenuPanel) MenuPanel.SetActive(false);
 
@@ -72,7 +78,7 @@ public class LevelHandler : MonoBehaviour {
 
         for(int i = 0; i < Levels.Length; i+=1)
         {
-            GameObject btnObject = GameObject.Instantiate(LevelButtonPrefab, ScrollView.transform.position, Quaternion.identity);
+            GameObject btnObject = Instantiate(LevelButtonPrefab, ScrollView.transform.position, Quaternion.identity);
             btnObject.transform.GetChild(0).GetComponent<Text>().text = Levels[i].LevelTitle;
             btnObject.transform.SetParent(ScrollView.transform);
             float PosY = ButtonStart + ButtonSpacing * i + ScrollView.GetComponent<RectTransform>().rect.height / 2;
@@ -92,6 +98,38 @@ public class LevelHandler : MonoBehaviour {
             displayMenu = !displayMenu;
             MenuPanel.SetActive(displayMenu);
         }
+        handleWinnerPanelButtonsSelection();
+
+    }
+
+
+    private void handleWinnerPanelButtonsSelection(){
+        if (WinnerSplash.activeSelf)
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                WinningButtons[currentButtonSelected].Select();
+               
+            }
+
+            if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                int newIndex = currentButtonSelected - 1;
+                if (newIndex < 0) newIndex = WinningButtons.Length - 1;
+                setButtonSelectedHightlighted(newIndex);
+            }
+            if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                setButtonSelectedHightlighted((currentButtonSelected + 1) % WinningButtons.Length);
+            }
+
+
+        }
+    }
+
+    private void setButtonSelectedHightlighted(int index){
+        currentButtonSelected = index;
+        WinningButtonSelectedHighlight.rectTransform.position = WinningButtons[currentButtonSelected].transform.position;
     }
 
     private void handleLevelTitle()
@@ -151,8 +189,11 @@ public class LevelHandler : MonoBehaviour {
 
     public void LeverTriggered(bool isTriggered)
     {
+        if (!LevelComplete && isTriggered) setButtonSelectedHightlighted(0); 
         LevelComplete = isTriggered;
         WinnerSplash.SetActive(LevelComplete);
+
+
     }
 
     public void ShowArrowToggle(bool state)

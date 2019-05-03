@@ -234,7 +234,7 @@ public class CharacterController2D : MonoBehaviour
 			if(!raycastHit){
 				continue;
 			}
-
+            raycastHit.
 			offset = isRight ? ((raycastHit.point.x - _transform.position.x) - halfWidth) : (halfWidth - (_transform.position.x - raycastHit.point.x));
             
         }
