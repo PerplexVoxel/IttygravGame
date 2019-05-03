@@ -11,7 +11,8 @@ public class CharacterController2D : MonoBehaviour
 
     private float slantX;
     private float slantY;
-    private int currentAngle;
+    public int currentAngle;
+    private float[ , ] sudoTransform;
 
 	public LayerMask PlatformMask; 
 	public ControllerParameters2D DefaultParameters;
@@ -75,7 +76,36 @@ public class CharacterController2D : MonoBehaviour
 		_verticalDistanceBetweenRays = colliderHeight / (TotalHorizontalRays - 1);
 
         calcSlant();
+        calcSudoTransform();
 	}
+
+    private void calcSudoTransform()
+    {
+        sudoTransform = new float[8, 2];
+        float stot = (Mathf.Sqrt(2) / 2f);
+
+        sudoTransform[0, 0] = 0;
+        sudoTransform[0, 1] = -1;
+        sudoTransform[1, 0] = stot;
+        sudoTransform[1, 1] = -stot;
+        sudoTransform[2, 0] = 1;
+        sudoTransform[2, 1] = 0;
+        sudoTransform[3, 0] = stot;
+        sudoTransform[3, 1] = stot;
+        sudoTransform[4, 0] = 0;
+        sudoTransform[4, 1] = 1;
+        sudoTransform[5, 0] = -stot;
+        sudoTransform[5, 1] = stot;
+        sudoTransform[6, 0] = -1;
+        sudoTransform[6, 1] = 0;
+        sudoTransform[7, 0] = -stot;
+        sudoTransform[7, 1] = -stot;
+
+
+
+    }
+
+
     public void calcSlant()
     {
         slantX = this.GetComponent<BoxCollider2D>().size.y / (2 + Mathf.Sqrt(2));
@@ -127,13 +157,25 @@ public class CharacterController2D : MonoBehaviour
     public void RotatePlayer(float rotationAngle)
     {
         transform.eulerAngles = new Vector3(0, 0, rotationAngle);
+        /*currentAngle = currentAngle + direction;
+
+        if (currentAngle > 7)
+            currentAngle -= 8;
+
+        if (currentAngle < 0)
+            currentAngle += 8;
+
+        RotatePlayer(currentAngle);*/
+
+
     }
 
     private Vector2 mapToPlayerOrientation(Vector3 adjustingVector)
     {
         if (transform.eulerAngles.z != lastPlayerAngle)
         {
-            float angle = transform.eulerAngles.z;
+
+            float angle = transform.eulerAngles.z ;
             float angle2 = Mathf.PI * (angle + 90) / 180;
             angle = angle * Mathf.PI / 180;
 
@@ -413,7 +455,7 @@ public class CharacterController2D : MonoBehaviour
 			}
 		}
 	}
-	
+
     public void CheckPlatform(int direction)
     {
         //if (platform.eulerAngles.z != transform.eulerAngles.z)
@@ -421,22 +463,26 @@ public class CharacterController2D : MonoBehaviour
         //    RotatePlayer(platform.eulerAngles.z);
         //}
 
-        if (direction > 0)
-        {
-            currentAngle = currentAngle + 45;
-            if (currentAngle >= 360)
+        currentAngle = currentAngle + direction;
+        if (direction > 0) {
+
+            currentAngle += 45;
+            if (currentAngle > 360)
+            {
                 currentAngle -= 360;
-
+            }
             RotatePlayer(currentAngle);
         }
-        else
+        if (direction < 0)
         {
-            currentAngle = currentAngle - 45;
+            currentAngle -= 45;
             if (currentAngle < 0)
+            {
                 currentAngle += 360;
-
+            }
             RotatePlayer(currentAngle);
         }
+        
         /*if (platform.tag == "Platform090") RotatePlayer(90);
         else if (platform.tag == "Platform135") RotatePlayer(135);
         else if (platform.tag == "Platform180") RotatePlayer(180);

@@ -8,12 +8,14 @@ public class TransitionCollider : MonoBehaviour {
     private float y; // ^^                                                  ^^
     private Vector3[,] CooridinateMatrix; //This holds the transformations for the collider
     private int[] positionOffset = new int[] { 0, 1, 2, 3 };
-	private bool locked;
-    
+    public int lockframes;
+    private int locked;
+    public LayerMask plateformMask;
+    public float detectionBuffer;
     // Use this for initialization
 	void Start () {
         calcRayMatrix();
-        locked = false;
+        locked = 0;
     }
 
     private void FixedUpdate()
@@ -102,13 +104,13 @@ public class TransitionCollider : MonoBehaviour {
             {
                 if (positionOffset[i] > 15)
                 {
-                    positionOffset[i] -= 15;
+                    positionOffset[i] -= 16;
                    
                 }
                 Debug.Log(positionOffset[i]);
             }
             this.GetComponent<CharacterController2D>().CheckPlatform(1);
-            locked = true;
+            locked = lockframes;
         }
         else{
             for (int i = 0; i < 4; i++)
@@ -125,22 +127,29 @@ public class TransitionCollider : MonoBehaviour {
                 Debug.Log(positionOffset[i]);
             }
             this.GetComponent<CharacterController2D>().CheckPlatform(-1);
-            locked = true;
+            locked = lockframes;
         }
     }
 
     private void checkCollision()
     {
-        if (locked == false)
+        if (locked == 0)
         {
-            float dis0, dis1, dis2, dis3;
+            var lRay = Physics2D.Raycast(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[positionOffset[0], 0], CooridinateMatrix[positionOffset[0], 1], collisionDistance, plateformMask);
+            var lbRay = Physics2D.Raycast(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[positionOffset[1], 0], CooridinateMatrix[positionOffset[1], 1], collisionDistance, plateformMask);
+            var rbRay = Physics2D.Raycast(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[positionOffset[2], 0], CooridinateMatrix[positionOffset[2], 1], collisionDistance, plateformMask);
+            var rRay = Physics2D.Raycast(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[positionOffset[3], 0], CooridinateMatrix[positionOffset[3], 1], collisionDistance, plateformMask);
 
-            dis0 = Physics2D.Raycast(CooridinateMatrix[positionOffset[0], 0], CooridinateMatrix[positionOffset[0], 1]).distance;
-            dis1 = Physics2D.Raycast(CooridinateMatrix[positionOffset[1], 0], CooridinateMatrix[positionOffset[1], 1]).distance;
-            dis2 = Physics2D.Raycast(CooridinateMatrix[positionOffset[2], 0], CooridinateMatrix[positionOffset[2], 1]).distance;
-            dis3 = Physics2D.Raycast(CooridinateMatrix[positionOffset[3], 0], CooridinateMatrix[positionOffset[3], 1]).distance;
+            if (lRay && lRay.distance <= detectionBuffer)
+            {
+                transition(-1);
+            }
+            if(rRay && rRay.distance <= detectionBuffer)
+            {
+                transition(1);
+            }
 
-            if (dis0 == 0)
+            /*if (dis0 == 0)
             {
                 transition(1);
             }
@@ -155,11 +164,11 @@ public class TransitionCollider : MonoBehaviour {
             else if (dis2 > dis3 && dis1 != dis2)
             {
                 transition(1);
-            }
+            }*/
         }
         else
         {
-            locked = false;
+            locked--;
         }
     }
 }
