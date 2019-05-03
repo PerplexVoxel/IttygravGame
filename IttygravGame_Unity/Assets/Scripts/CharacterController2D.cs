@@ -463,7 +463,7 @@ public class CharacterController2D : MonoBehaviour
         //    RotatePlayer(platform.eulerAngles.z);
         //}
 
-        currentAngle = currentAngle + direction;
+        
         if (direction > 0) {
 
             currentAngle += 45;
