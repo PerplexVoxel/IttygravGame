@@ -13,6 +13,8 @@ public class CrateController2D : MonoBehaviour {
 
     public float DeltaMoveCoefficient = 1.5f;
 
+    private List<Transform> collidingObjects = new List<Transform>();
+
     // Use this for initialization
     void Start () {
         GetComponent<Rigidbody2D>().mass = Parameters.Mass;
@@ -26,6 +28,7 @@ public class CrateController2D : MonoBehaviour {
     private void FixedUpdate()
     {
         GetComponent<Rigidbody2D>().AddForce(Parameters.GravityCoefficient* Parameters.Mass *Parameters.Gravity );
+        //collidingObjects.Clear();
     }
 
     public Vector2 Move(Vector2 deltaMovement, float massOfImpact, Vector2 normalForce)
@@ -41,5 +44,25 @@ public class CrateController2D : MonoBehaviour {
         GetComponent<Rigidbody2D>().AddForce(normalForce );
 
         return deltaMovement;
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.transform.CompareTag("Box"))
+        {
+            collidingObjects.Add(collision.transform);
+        }
+    }
+
+	private void OnCollisionExit2D(Collision2D collision)
+	{
+        if (collision.transform.CompareTag("Box"))
+        {
+            collidingObjects.Remove(collision.transform);
+        }
+	}
+
+	public List<Transform> GetCollidingObject(){
+        return collidingObjects;
     }
 }

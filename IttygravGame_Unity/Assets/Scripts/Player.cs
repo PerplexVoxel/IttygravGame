@@ -22,6 +22,8 @@ public class Player : MonoBehaviour
 
     public AudioClip JumpAudio;
 
+    private bool isGrounded = true;
+
 	public void Awake()
 	{
 		_controller = GetComponent<CharacterController2D> ();
@@ -36,7 +38,12 @@ public class Player : MonoBehaviour
             if (!ControlsFrozen) HandleInput();
             _controller.MotionFrozen = PositionFrozen;
         }
-			
+		
+        if(_controller.State.IsGrounded && !isGrounded){
+            GameObject.FindGameObjectWithTag("AudioSource").GetComponent<AudioController>().PlayPlayerFX(1);
+
+        }
+        isGrounded = _controller.State.IsGrounded;
 
 		var movementFactor = _controller.State.IsGrounded ? SpeedAccelerationOnGround : SpeedAccelerationInAir;
 
