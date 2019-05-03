@@ -18,6 +18,22 @@ TextureImporter:
     21300026: IG_Tiles_Platforms_13
     21300028: IG_Tiles_Platforms_14
     21300030: IG_Tiles_Platforms_15
+    21300032: IG_Tiles_Platforms_16
+    21300034: IG_Tiles_Platforms_17
+    21300036: IG_Tiles_Platforms_18
+    21300038: IG_Tiles_Platforms_19
+    21300040: IG_Tiles_Platforms_20
+    21300042: IG_Tiles_Platforms_21
+    21300044: IG_Tiles_Platforms_22
+    21300046: IG_Tiles_Platforms_23
+    21300048: IG_Tiles_Platforms_24
+    21300050: IG_Tiles_Platforms_25
+    21300052: IG_Tiles_Platforms_26
+    21300054: IG_Tiles_Platforms_27
+    21300056: IG_Tiles_Platforms_28
+    21300058: IG_Tiles_Platforms_29
+    21300060: IG_Tiles_Platforms_30
+    21300062: IG_Tiles_Platforms_31
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -147,7 +163,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f7f4ac64db7776842a556082fde31d64
+      spriteID: f00e3357935bdfd45b444559cf6bccbd
       vertices: []
       indices: 
       edges: []
@@ -167,7 +183,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3bdb3b5236d6dcc45aad017f7fa2839c
+      spriteID: 3e035cf10b5b48443bd31fd035464e1b
       vertices: []
       indices: 
       edges: []
@@ -187,7 +203,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 80343d2c3b72e4147b985300c2deac06
+      spriteID: 268b0918fff5b8c418ef3e49263d8479
       vertices: []
       indices: 
       edges: []
@@ -207,7 +223,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f9d4ceb25fb83c748ae8128bbf602ac5
+      spriteID: 390509583a4093f47bb0688f4b40dff3
       vertices: []
       indices: 
       edges: []
@@ -216,8 +232,8 @@ TextureImporter:
       name: IG_Tiles_Platforms_4
       rect:
         serializedVersion: 2
-        x: 0
-        y: 2048
+        x: 4096
+        y: 3072
         width: 1024
         height: 1024
       alignment: 0
@@ -227,7 +243,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b11beb70d21be2344b3feadd3442064e
+      spriteID: 4899e0003b32ad64cb5d8595cccb422a
       vertices: []
       indices: 
       edges: []
@@ -236,8 +252,8 @@ TextureImporter:
       name: IG_Tiles_Platforms_5
       rect:
         serializedVersion: 2
-        x: 1024
-        y: 2048
+        x: 5120
+        y: 3072
         width: 1024
         height: 1024
       alignment: 0
@@ -247,7 +263,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cfe9723c252ee514fb63a1ba42d28d97
+      spriteID: 02b4f87c02b401345a4c929501f7d751
       vertices: []
       indices: 
       edges: []
@@ -256,8 +272,8 @@ TextureImporter:
       name: IG_Tiles_Platforms_6
       rect:
         serializedVersion: 2
-        x: 2048
-        y: 2048
+        x: 6144
+        y: 3072
         width: 1024
         height: 1024
       alignment: 0
@@ -267,7 +283,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 233a089aa59b3bf458d1f7603b145166
+      spriteID: 79c11cd16112ca046abf07e9d96a7ced
       vertices: []
       indices: 
       edges: []
@@ -276,8 +292,8 @@ TextureImporter:
       name: IG_Tiles_Platforms_7
       rect:
         serializedVersion: 2
-        x: 3072
-        y: 2048
+        x: 7168
+        y: 3072
         width: 1024
         height: 1024
       alignment: 0
@@ -287,7 +303,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0a537c8f3bccb3a4cb400e5b972ead7e
+      spriteID: e5bbf40ba60cf4b43b3e68d2039ea22f
       vertices: []
       indices: 
       edges: []
@@ -297,6 +313,166 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
+        y: 2048
+        width: 1024
+        height: 1024
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bb825de3e48985942b6cd5afc45152b9
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IG_Tiles_Platforms_9
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 2048
+        width: 1024
+        height: 1024
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d3e463f9eeff0ef4d9899480718b0fe3
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IG_Tiles_Platforms_10
+      rect:
+        serializedVersion: 2
+        x: 2048
+        y: 2048
+        width: 1024
+        height: 1024
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eb1436122a65bf94ca67cc57ad1d39d3
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IG_Tiles_Platforms_11
+      rect:
+        serializedVersion: 2
+        x: 3072
+        y: 2048
+        width: 1024
+        height: 1024
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4788b090378993744bd2a48b21149604
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IG_Tiles_Platforms_12
+      rect:
+        serializedVersion: 2
+        x: 4096
+        y: 2048
+        width: 1024
+        height: 1024
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b7ce7a84a1dcf5e488bf9600527e389d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IG_Tiles_Platforms_13
+      rect:
+        serializedVersion: 2
+        x: 5120
+        y: 2048
+        width: 1024
+        height: 1024
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7532ea841e78c6f4d824f13eb2dcff9f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IG_Tiles_Platforms_14
+      rect:
+        serializedVersion: 2
+        x: 6144
+        y: 2048
+        width: 1024
+        height: 1024
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b22ad09d2e1c44046b915816475c0156
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IG_Tiles_Platforms_15
+      rect:
+        serializedVersion: 2
+        x: 7168
+        y: 2048
+        width: 1024
+        height: 1024
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e8debe4a2c4986d4db545b25d4785ac9
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IG_Tiles_Platforms_16
+      rect:
+        serializedVersion: 2
+        x: 0
         y: 1024
         width: 1024
         height: 1024
@@ -307,13 +483,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f71a5b00b6021b54fb43c9d1510b776e
+      spriteID: 6573a14c5b840a045843151051b73943
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: IG_Tiles_Platforms_9
+      name: IG_Tiles_Platforms_17
       rect:
         serializedVersion: 2
         x: 1024
@@ -327,13 +503,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 911a9c0fffb03a4419d6479e538c8c07
+      spriteID: 6e6c11c3e9293ae47ad7c8d0d10903a3
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: IG_Tiles_Platforms_10
+      name: IG_Tiles_Platforms_18
       rect:
         serializedVersion: 2
         x: 2048
@@ -347,13 +523,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d9c61ebc31f193a4b82c4da327400450
+      spriteID: 9f4091fa6ecf48846be43aeeee67c9ed
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: IG_Tiles_Platforms_11
+      name: IG_Tiles_Platforms_19
       rect:
         serializedVersion: 2
         x: 3072
@@ -367,13 +543,93 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 467e76c7e201b4545ac4239e7379aa53
+      spriteID: 17cc0c375ef7db643ab5ddd76e760eb3
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: IG_Tiles_Platforms_12
+      name: IG_Tiles_Platforms_20
+      rect:
+        serializedVersion: 2
+        x: 4096
+        y: 1024
+        width: 1024
+        height: 1024
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b35dbb7906465b044b6966081f96443e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IG_Tiles_Platforms_21
+      rect:
+        serializedVersion: 2
+        x: 5120
+        y: 1024
+        width: 1024
+        height: 1024
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 789b92d540c9b794ba351ffb6caff0c8
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IG_Tiles_Platforms_22
+      rect:
+        serializedVersion: 2
+        x: 6144
+        y: 1024
+        width: 1024
+        height: 1024
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3bd6ccf84b58e284cad527efaf8c152d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IG_Tiles_Platforms_23
+      rect:
+        serializedVersion: 2
+        x: 7168
+        y: 1024
+        width: 1024
+        height: 1024
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 632c964f85294044db89d2552deaf154
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IG_Tiles_Platforms_24
       rect:
         serializedVersion: 2
         x: 0
@@ -387,13 +643,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cf29bafd87a113a408882b7022ffca1a
+      spriteID: 6717a4259eca488408e93511ed3af5aa
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: IG_Tiles_Platforms_13
+      name: IG_Tiles_Platforms_25
       rect:
         serializedVersion: 2
         x: 1024
@@ -407,13 +663,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5c0c5da1da0ea86449ff4056981e090d
+      spriteID: 573c2e9a85da555499db932e7b2bafd4
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: IG_Tiles_Platforms_14
+      name: IG_Tiles_Platforms_26
       rect:
         serializedVersion: 2
         x: 2048
@@ -427,13 +683,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4f12edd0a40188149a3f061158b7b24b
+      spriteID: f59df172a124a2c46a09e290572d02a3
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: IG_Tiles_Platforms_15
+      name: IG_Tiles_Platforms_27
       rect:
         serializedVersion: 2
         x: 3072
@@ -447,7 +703,87 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e6a963b080837ff439183bfac6c2762a
+      spriteID: 6f8121565924be54090d1c8074adb43b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IG_Tiles_Platforms_28
+      rect:
+        serializedVersion: 2
+        x: 4096
+        y: 0
+        width: 1024
+        height: 1024
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e9bae65d8a514a143803f8afe4b82c01
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IG_Tiles_Platforms_29
+      rect:
+        serializedVersion: 2
+        x: 5120
+        y: 0
+        width: 1024
+        height: 1024
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f6e3d03a483ed624783bd6a9c114b10d
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IG_Tiles_Platforms_30
+      rect:
+        serializedVersion: 2
+        x: 6144
+        y: 0
+        width: 1024
+        height: 1024
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fd90b9b8f56f7ec44adad3840110f519
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: IG_Tiles_Platforms_31
+      rect:
+        serializedVersion: 2
+        x: 7168
+        y: 0
+        width: 1024
+        height: 1024
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6f993eaaddd0ca8429fc5c270fee7b84
       vertices: []
       indices: 
       edges: []
