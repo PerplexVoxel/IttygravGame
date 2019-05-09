@@ -109,6 +109,7 @@ public class LevelHandler : MonoBehaviour {
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 WinningButtons[currentButtonSelected].Select();
+                WinningButtons[currentButtonSelected].Select();
                
             }
 
