@@ -120,7 +120,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1273166580614010}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.337, y: 1.92, z: 0}
+  m_LocalPosition: {x: 4.77, y: 4.49, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4567942979542154}
@@ -374,7 +374,7 @@ MonoBehaviour:
     SlopeLimit: 67.7
     JumpRestrictions: 0
     JumpFrequency: 0.25
-    JumpMagnitude: 13
+    JumpMagnitude: 14.1
   MotionFrozen: 0
 --- !u!114 &114501502790141700
 MonoBehaviour:

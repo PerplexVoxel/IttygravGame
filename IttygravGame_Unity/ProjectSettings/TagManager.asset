@@ -16,6 +16,7 @@ TagManager:
   - LevelHandler
   - AudioSource
   - MiniMap
+  - Platform
   layers:
   - Default
   - TransparentFX

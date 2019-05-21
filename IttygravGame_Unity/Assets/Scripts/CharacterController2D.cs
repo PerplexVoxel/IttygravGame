@@ -327,7 +327,7 @@ public class CharacterController2D : MonoBehaviour
 			if (!raycastHit)
 				continue;
 
-            if(raycastHit.transform.gameObject.layer == LayerMask.NameToLayer("Platform")) CheckPlatform(raycastHit.transform);
+            if(raycastHit.transform.gameObject.layer == LayerMask.NameToLayer("Platform") && !isGoingUp) CheckPlatform(raycastHit.transform);
             //CheckPlatform(raycastHit.transform);
 
 
