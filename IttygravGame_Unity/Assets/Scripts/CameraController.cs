@@ -7,6 +7,8 @@ public class CameraController : MonoBehaviour {
     public float RotationSmoothing = 10;
     public float FollowSmoothing = 10;
     public Vector2 FollowOffset;
+    public bool FollowPlayer = true;
+    public PointOfInterest POI;
 
     public GameObject AttensionArrow;
     public GameObject Lever;
@@ -20,16 +22,17 @@ public class CameraController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        //move towards player
-        float cameraAngle = transform.eulerAngles.z * Mathf.PI /180;
-        float xOffset = Mathf.Cos(cameraAngle) * FollowOffset.x + Mathf.Cos(cameraAngle + Mathf.PI / 2) * FollowOffset.y;
-        float yOffset = Mathf.Sin(cameraAngle) * FollowOffset.x + Mathf.Sin(cameraAngle + Mathf.PI / 2) * FollowOffset.y;
-        Vector3 newCameraPosition = new Vector3(Player.transform.position.x + xOffset, Player.transform.position.y + yOffset, transform.position.z);
-        transform.position = Vector3.Lerp(newCameraPosition, transform.position, FollowSmoothing * Time.deltaTime);
 
-        //rotate camera
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, Player.transform.rotation, RotationSmoothing * Time.deltaTime);
-
+        if (FollowPlayer)
+        {
+            followPlayer();
+            if (POI) if(POI.ZoomIn) zoomIn();
+        }
+        else
+        {
+            panOut();
+            DisplayArrow = false;
+        }
 
         //
         if (DisplayArrow)
@@ -46,6 +49,54 @@ public class CameraController : MonoBehaviour {
         
         
 	}
+    private void panOut()
+    {
+
+
+        //Debug.Log(GetComponent<Camera>().orthographicSize);
+
+        float dollyRate = Vector3.Distance(transform.position, POI.PanTarget.transform.position) * POI.ZoomRate / (POI.CameraSize - GetComponent<Camera>().orthographicSize);
+
+        if (GetComponent<Camera>().orthographicSize < POI.CameraSize)
+        {
+            GetComponent<Camera>().orthographicSize = GetComponent<Camera>().orthographicSize + POI.ZoomRate * Time.deltaTime;
+        }
+        else
+        {
+            GetComponent<Camera>().orthographicSize = POI.CameraSize;
+        }
+
+        //transform.position = Vector3.MoveTowards(transform.position, POI.PanTarget.transform.position, POI.PanRate * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, POI.PanTarget.transform.position, dollyRate * Time.deltaTime);
+    }
+
+    private void zoomIn()
+    {
+        if(GetComponent<Camera>().orthographicSize > POI.ZoomedCameraSize)
+        {
+            GetComponent<Camera>().orthographicSize = GetComponent<Camera>().orthographicSize - POI.ZoomRate * Time.deltaTime;
+        }
+        else
+        {
+            GetComponent<Camera>().orthographicSize = POI.ZoomedCameraSize;
+            POI = null;
+        }
+        
+    }
+
+    private void followPlayer()
+    {
+        //move towards player
+        float cameraAngle = transform.eulerAngles.z * Mathf.PI / 180;
+        float xOffset = Mathf.Cos(cameraAngle) * FollowOffset.x + Mathf.Cos(cameraAngle + Mathf.PI / 2) * FollowOffset.y;
+        float yOffset = Mathf.Sin(cameraAngle) * FollowOffset.x + Mathf.Sin(cameraAngle + Mathf.PI / 2) * FollowOffset.y;
+        Vector3 newCameraPosition = new Vector3(Player.transform.position.x + xOffset, Player.transform.position.y + yOffset, transform.position.z);
+        transform.position = Vector3.Lerp(newCameraPosition, transform.position, FollowSmoothing * Time.deltaTime);
+
+        //rotate camera
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, Player.transform.rotation, RotationSmoothing * Time.deltaTime);
+
+    }
     float radius = 2;
     void handleAttensionArrow()
     {
