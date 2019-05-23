@@ -151,10 +151,10 @@ public class CharacterController2D : MonoBehaviour
         _velocity.y += gravity;
         //Debug.Log("Gravity: " + gravity);
         //_velocity.y += -25 * Time.deltaTime;
-        
-        Move (Velocity * Time.deltaTime);
-        this.GetComponent<Player>().ControlsFrozen = false;
+
         this.GetComponent<TransitionCollider>().checkCollision();
+        Move (Velocity * Time.deltaTime);
+        this.GetComponent<Player>().ControlsFrozen = false; 
 	}
 
     float xx = 1;
@@ -167,7 +167,8 @@ public class CharacterController2D : MonoBehaviour
     public void RotatePlayer(float rotationAngle)
     {
         transform.eulerAngles = new Vector3(0, 0, rotationAngle);
-        
+        if(!State.IsGrounded)
+            this.transform.position = this.transform.position + (Vector3)mapToPlayerOrientation(new Vector3(0, .05f, 0));
         //rotationVector.eulerAngles = new Vector3(0, 0, rotationAngle);
         /*currentAngle = currentAngle + direction;
 
@@ -220,14 +221,16 @@ public class CharacterController2D : MonoBehaviour
 		if (HandleCollisions) {
 			
 			CalculateRayOrigins();
- 
+
+            MoveVertically(ref deltaMovement);
+
             if (Mathf.Abs(deltaMovement.x) > 0.001f)
             {
                 MoveHorizontally(ref deltaMovement);
             }
 
             
-            MoveVertically(ref deltaMovement);
+            
 
             //CorrectHorizontalPlacement(ref deltaMovement, true);
             //CorrectHorizontalPlacement(ref deltaMovement, false);

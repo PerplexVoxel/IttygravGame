@@ -139,6 +139,21 @@ public class TransitionCollider : MonoBehaviour {
         }
     }
 
+    public void startOrientation(int position)
+    {
+        /**
+         * input the number of default transitions in counter clockwise direction.
+         */
+        for(int i = 1; i < 4; i++)
+        {
+            positionOffset[i] += position;
+            if (positionOffset[i] > 15)
+            {
+                positionOffset[i] -= 16;
+            }
+        }
+    }
+
     public void checkCollision()
     {
         if (locked == 0)
@@ -152,31 +167,14 @@ public class TransitionCollider : MonoBehaviour {
             {
                 this.GetComponent<Player>().ControlsFrozen = true;
                 transition(-1);
-                //this.GetComponent<Player>().PositionFrozen = false;
             }
             if(rRay && rRay.distance <= detectionBuffer)
             {
                 this.GetComponent<Player>().ControlsFrozen = true;
                 transition(1);
-                //this.GetComponent<Player>().PositionFrozen = false;
             }
 
-            /*if (dis0 == 0)
-            {
-                transition(1);
-            }
-            else if (dis3 == 0)
-            {
-                transition(-1);
-            }
-            else if (dis1 > dis0 && dis1 != dis2)
-            {
-                transition(-1);
-            }
-            else if (dis2 > dis3 && dis1 != dis2)
-            {
-                transition(1);
-            }*/
+            
         }
         else
         {
