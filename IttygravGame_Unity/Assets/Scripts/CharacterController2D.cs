@@ -151,14 +151,10 @@ public class CharacterController2D : MonoBehaviour
         _velocity.y += gravity;
         //Debug.Log("Gravity: " + gravity);
         //_velocity.y += -25 * Time.deltaTime;
-
-        if(!MotionFrozen) Move (Velocity * Time.deltaTime);
-
-        this.GetComponent<BoxCollider2D>().OverlapCollider(ContactFilter2D.NoFilter(), hits);
-        if (hits != null)
-        {
-
-        }
+        
+        Move (Velocity * Time.deltaTime);
+        this.GetComponent<Player>().ControlsFrozen = false;
+        this.GetComponent<TransitionCollider>().checkCollision();
 	}
 
     float xx = 1;
@@ -167,22 +163,11 @@ public class CharacterController2D : MonoBehaviour
     float yy = 1;
     float lastPlayerAngle = 0;
 
-    Collider2D[] hits;
-    public float unclipDistance;
-    public void unclip()
-    {     
-        do {
-            this.GetComponent<BoxCollider2D>().OverlapCollider(cfilter, hits);
-            if (hits != null)
-                transform.position = transform.position + (Vector3)mapToPlayerOrientation(new Vector3(0, unclipDistance, 0));
-
-        }while (hits != null) ;
-    }
 
     public void RotatePlayer(float rotationAngle)
     {
         transform.eulerAngles = new Vector3(0, 0, rotationAngle);
-        unclip();
+        
         //rotationVector.eulerAngles = new Vector3(0, 0, rotationAngle);
         /*currentAngle = currentAngle + direction;
 

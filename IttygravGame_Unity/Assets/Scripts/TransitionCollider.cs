@@ -20,7 +20,7 @@ public class TransitionCollider : MonoBehaviour {
 
     private void LateUpdate()
     {
-        checkCollision();
+        //checkCollision();
         Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[positionOffset[0], 0], CooridinateMatrix[positionOffset[0], 1], Color.red);
         Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[positionOffset[1], 0], CooridinateMatrix[positionOffset[1], 1], Color.red);
         Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[positionOffset[2], 0], CooridinateMatrix[positionOffset[2], 1], Color.red);
@@ -139,7 +139,7 @@ public class TransitionCollider : MonoBehaviour {
         }
     }
 
-    private void checkCollision()
+    public void checkCollision()
     {
         if (locked == 0)
         {
@@ -150,11 +150,15 @@ public class TransitionCollider : MonoBehaviour {
 
             if (lRay && lRay.distance <= detectionBuffer)
             {
+                this.GetComponent<Player>().ControlsFrozen = true;
                 transition(-1);
+                //this.GetComponent<Player>().PositionFrozen = false;
             }
             if(rRay && rRay.distance <= detectionBuffer)
             {
+                this.GetComponent<Player>().ControlsFrozen = true;
                 transition(1);
+                //this.GetComponent<Player>().PositionFrozen = false;
             }
 
             /*if (dis0 == 0)
