@@ -18,7 +18,6 @@ public class LevelHandler : MonoBehaviour {
     private bool LevelComplete = false;
 
     public LevelInfo[] Levels;
-    public LevelSet CurrentLevelSet;
     public float ButtonStart = -15;
     public float ButtonSpacing = -40;
     public GameObject MenuPanel;
