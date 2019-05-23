@@ -8,7 +8,7 @@ public class TransitionCollider : MonoBehaviour
     private float x; //These represent geometric calculations made on the object
     private float y; // ^^                                                  ^^
     private Vector3[,] CooridinateMatrix; //This holds the transformations for the collider
-    private int[] positionOffset = new int[] { 0, 1, 2, 3 };
+    public int[] positionOffset = new int[] { 0, 1, 2, 3 };
     public int lockframes;
     private int locked;
     public LayerMask plateformMask;
@@ -23,6 +23,7 @@ public class TransitionCollider : MonoBehaviour
     private void FixedUpdate()
     {
         checkCollision();
+        Debug.Log(positionOffset[0] + ", " + positionOffset[1] + ", " + positionOffset[2] + ", " + positionOffset[3]);
         Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[positionOffset[0], 0], CooridinateMatrix[positionOffset[0], 1], Color.red);
         Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[positionOffset[1], 0], CooridinateMatrix[positionOffset[1], 1], Color.red);
         Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[positionOffset[2], 0], CooridinateMatrix[positionOffset[2], 1], Color.red);
@@ -38,8 +39,8 @@ public class TransitionCollider : MonoBehaviour
         float xTwoThird = (y / 2f) + (x * (2f / 3f));
         float xHalfY = x + (y / 2f);
         float yOneSixth = (y / 6);
-        Debug.Log(x.ToString());
-        Debug.Log(y.ToString());
+        //Debug.Log(x.ToString());
+        //Debug.Log(y.ToString());
         float collisionAdjusted = collisionDistance * Mathf.Sqrt(1f / 2f);
 
         CooridinateMatrix = new Vector3[16, 2]; //[x,y] x = position, y:0 = origin of ray, y:1 = direction of ray
@@ -93,14 +94,14 @@ public class TransitionCollider : MonoBehaviour
         CooridinateMatrix[15, 1] = new Vector3(/*-xTwoThird */ -collisionAdjusted, /*-xOneThird */ -collisionAdjusted);
     }
 
-    private void transition(int direction)
+    private void transition(int direction, Transform platform)
     {
         if (direction > 0)
         {
             for (int i = 0; i < 4; i++)
             {
                 positionOffset[i] += 2;
-                Debug.Log(positionOffset[i]);
+                //Debug.Log(positionOffset[i]);
             }
             for (int i = 0; i < 4; i++)
             {
@@ -109,9 +110,9 @@ public class TransitionCollider : MonoBehaviour
                     positionOffset[i] -= 16;
 
                 }
-                Debug.Log(positionOffset[i]);
+                //Debug.Log(positionOffset[i]);
             }
-            this.GetComponent<CharacterController2D>().CheckPlatform(1);
+            this.GetComponent<CharacterController2D>().CheckPlatform(1, platform);
             locked = lockframes;
         }
         else
@@ -119,7 +120,7 @@ public class TransitionCollider : MonoBehaviour
             for (int i = 0; i < 4; i++)
             {
                 positionOffset[i] -= 2;
-                Debug.Log(positionOffset[i]);
+                //Debug.Log(positionOffset[i]);
             }
             for (int i = 0; i < 4; i++)
             {
@@ -127,9 +128,9 @@ public class TransitionCollider : MonoBehaviour
                 {
                     positionOffset[i] += 16;
                 }
-                Debug.Log(positionOffset[i]);
+                //Debug.Log(positionOffset[i]);
             }
-            this.GetComponent<CharacterController2D>().CheckPlatform(-1);
+            this.GetComponent<CharacterController2D>().CheckPlatform(-1, platform);
             locked = lockframes;
         }
     }
@@ -145,11 +146,11 @@ public class TransitionCollider : MonoBehaviour
 
             if (lRay && lRay.distance <= detectionBuffer)
             {
-                transition(-1);
+                transition(-1, lRay.transform);
             }
             if (rRay && rRay.distance <= detectionBuffer)
             {
-                transition(1);
+                transition(1, rRay.transform);
             }
 
             /*if (dis0 == 0)

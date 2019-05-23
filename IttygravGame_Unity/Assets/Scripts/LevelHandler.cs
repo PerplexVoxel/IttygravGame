@@ -56,6 +56,8 @@ public class LevelHandler : MonoBehaviour {
         ShowArrowToggle(ShowArrow);
         miniMap = null;
         ShowMiniMapToggle(ShowMiniMap);
+
+        
     }
 
     private void Start()
@@ -98,18 +100,20 @@ public class LevelHandler : MonoBehaviour {
             displayMenu = !displayMenu;
             MenuPanel.SetActive(displayMenu);
         }
+        
+
         handleWinnerPanelButtonsSelection();
 
+        
     }
 
-
+    
     private void handleWinnerPanelButtonsSelection(){
         if (WinnerSplash.activeSelf)
         {
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                WinningButtons[currentButtonSelected].Select();
-                WinningButtons[currentButtonSelected].Select();
+                WinningButtons[currentButtonSelected].onClick.Invoke();
                
             }
 
@@ -193,7 +197,8 @@ public class LevelHandler : MonoBehaviour {
         if (!LevelComplete && isTriggered) setButtonSelectedHightlighted(0); 
         LevelComplete = isTriggered;
         WinnerSplash.SetActive(LevelComplete);
-
+        FindObjectOfType<Player>().ControlsFrozen = isTriggered;
+        FindObjectOfType<Player>().PositionFrozen = isTriggered;
 
     }
 

@@ -40,7 +40,9 @@ public class Player : MonoBehaviour
         }
 		
         if(_controller.State.IsGrounded && !isGrounded){
-            GameObject.FindGameObjectWithTag("AudioSource").GetComponent<AudioController>().PlayPlayerFX(1);
+            if (GameObject.FindGameObjectWithTag("AudioSource")) {
+                GameObject.FindGameObjectWithTag("AudioSource").GetComponent<AudioController>().PlayPlayerFX(1);
+            }
 
         }
         isGrounded = _controller.State.IsGrounded;

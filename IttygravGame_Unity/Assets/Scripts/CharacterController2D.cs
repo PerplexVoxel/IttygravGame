@@ -349,7 +349,7 @@ public class CharacterController2D : MonoBehaviour
 
             if (iset < slantX)
             {
-                Debug.Log("Ping");
+                //Debug.Log("Ping");
                 //rayVector = (Vector2)rayOrigin + mapToPlayerOrientation(new Vector2((slantX - (iset * direction)),0)) + mapToPlayerOrientation(deltaMovement) + mapToPlayerOrientation(new Vector2(0, i * _verticalDistanceBetweenRays));
                 rayVector = new Vector2(rayOrigin.x, rayOrigin.y) + mapToPlayerOrientation(new Vector2(((slantX * direction) - (iset * direction)), (i * _verticalDistanceBetweenRays)));
             }
@@ -361,11 +361,12 @@ public class CharacterController2D : MonoBehaviour
             Debug.DrawRay(rayVector, rayDirection * rayDistance, Color.red);
 
             var rayCastHit = Physics2D.Raycast(rayVector, rayDirection, rayDistance, PlatformMask);
+            
 
             if (!rayCastHit)
                 continue;
 
-
+            
 
             Vector2 collisionDistance = new Vector2(Mathf.Sign(deltaMovement.x) * Vector3.Distance(new Vector2(rayCastHit.point.x, rayCastHit.point.y), rayVector), 0);
 
@@ -447,10 +448,29 @@ public class CharacterController2D : MonoBehaviour
             if (!raycastHit)
                 continue;
 
+            if (currentPlatformTag == "") currentPlatformTag = raycastHit.transform.tag;
+
             //if(raycastHit.transform.gameObject.layer == LayerMask.NameToLayer("Platform")) CheckPlatform(raycastHit.transform);
             //CheckPlatform(raycastHit.transform);
 
+            //Vector2 collisionDistance = new Vector2(Mathf.Sign(deltaMovement.x) * Vector3.Distance(new Vector2(raycastHit.point.x, raycastHit.point.y), rayVector), 0);
 
+            ////Check for box collision
+            //if (raycastHit.transform.gameObject.layer == LayerMask.NameToLayer("Box"))
+            //{
+            //    //Debug.Log("Box collision");
+            //    CrateController2D crate = raycastHit.transform.gameObject.GetComponent<CrateController2D>();
+
+            //    Vector2 playerNormal = -transform.up;
+            //    if (Vector3.Dot(crate.Parameters.Gravity, -transform.up) < 0)
+            //    {
+            //        playerNormal = Vector2.zero;
+            //    }
+            //    // mapToPlayerOrientation(-transform.up);
+            //    //Debug.Log(playerNormal.ToString());
+            //    collisionDistance.x = Mathf.Sign(collisionDistance.x) * Vector3.Magnitude(crate.Move(mapToPlayerOrientation(new Vector2(deltaMovement.x, 0)), Parameters.Mass, Parameters.BoxNormalForce * playerNormal));
+
+            //}
 
 
             deltaMovement.y = Mathf.Sign(deltaMovement.y) * Vector3.Distance(new Vector2(raycastHit.point.x, raycastHit.point.y), rayVector);
@@ -478,18 +498,43 @@ public class CharacterController2D : MonoBehaviour
             }
         }
     }
-
-    public void CheckPlatform(int direction)
+    string currentPlatformTag = "";
+    static readonly string[] platformTags = { "Platform000", "Platform045", "Platform090", "Platform135", "Platform180", "Platform225", "Platform270", "Platform315" };
+    //private enum platformTags { Platform000, Platform045, Platform090, Platform135, Platform180, Platform225, Platform270, Platform315 };
+    public void CheckPlatform(int direction, Transform platform)
     {
         //if (platform.eulerAngles.z != transform.eulerAngles.z)
         //{
         //    RotatePlayer(platform.eulerAngles.z);
         //}
+        Debug.Log(currentPlatformTag + "->" + platform.tag );
+        int currentIndex = getPlatformTagIndex(currentPlatformTag);
+        int nextPlatform = getPlatformTagIndex(platform.tag);
+        if(currentIndex < 0 || nextPlatform < 0)
+        {
+            Debug.Log("currentIndex = " + currentIndex + "| nextPlatform = " + nextPlatform);
+            return;
+        }
 
+        int rightIndex = (currentIndex + 1) % platformTags.Length;
+        int leftIndex = currentIndex - 1;
+        if (leftIndex < 0) leftIndex = platformTags.Length - 1;
+
+        if(nextPlatform == leftIndex || nextPlatform == rightIndex)
+        {
+            currentPlatformTag = platform.tag;
+        }
+        else
+        {
+            Debug.Log("Wrong Platform Error");
+            return;
+        }
+
+        
 
         if (direction > 0)
         {
-
+            
             currentAngle += 45;
             if (currentAngle > 360)
             {
@@ -515,6 +560,16 @@ public class CharacterController2D : MonoBehaviour
         else if (platform.tag == "Platform315") RotatePlayer(315);
         else if (platform.tag == "Platform000") RotatePlayer(0);
         else if (platform.tag == "Platform045") RotatePlayer(45);*/
+    }
+
+    private int getPlatformTagIndex(string tag)
+    {
+        int index = -1;
+        for(int i = 0; i < platformTags.Length; i += 1)
+        {
+            if (platformTags[i].Equals(tag)) index = i;
+        }
+        return index;
     }
 
     public void OnTriggerEnter2D(Collider2D other)

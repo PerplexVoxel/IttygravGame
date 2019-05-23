@@ -15,6 +15,8 @@ public class CrateController2D : MonoBehaviour {
 
     private List<Transform> collidingObjects = new List<Transform>();
 
+    private Vector2 playerMaxVelocity;
+
     // Use this for initialization
     void Start () {
         GetComponent<Rigidbody2D>().mass = Parameters.Mass;
@@ -22,7 +24,10 @@ public class CrateController2D : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if(playerMaxVelocity == null)
+        {
+            playerMaxVelocity = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterController2D>().Parameters.MaxVelocity;
+        }
 	}
 
     private void FixedUpdate()
@@ -36,12 +41,20 @@ public class CrateController2D : MonoBehaviour {
         //Do momentum calculation and check for box or wall collisions
         //Return the deltaMovement to set displacement of all touching objects.
         //If touching a wall, return 0
+
+
         transform.position += (Vector3)deltaMovement;
         //Vector2 myDeltaMovement = deltaMovement * DeltaMoveCoefficient / Time.deltaTime;
         //Debug.Log(deltaMovement.x);
 
         //GetComponent<Rigidbody2D>().velocity = myDeltaMovement;
         GetComponent<Rigidbody2D>().AddForce(normalForce );
+
+        return deltaMovement;
+    }
+
+    public Vector2 VerticalCollision(Vector2 deltaMovement, float massOfImpact, Vector2 normalForce)
+    {
 
         return deltaMovement;
     }
