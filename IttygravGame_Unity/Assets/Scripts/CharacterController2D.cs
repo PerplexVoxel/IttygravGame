@@ -413,6 +413,7 @@ public class CharacterController2D : MonoBehaviour
         float iset;
 		for (var i = 0; i < TotalVerticalRays; i++) {
             //var rayVector = new Vector2(rayOrigin.x + (i * _horizontalDistanceBetweenRays), rayOrigin.y);
+<<<<<<< HEAD
             iset = i * _horizontalDistanceBetweenRays;
             Vector2 rayVector;
 
@@ -441,6 +442,16 @@ public class CharacterController2D : MonoBehaviour
 				continue;
 
             //if(raycastHit.transform.gameObject.layer == LayerMask.NameToLayer("Platform")) CheckPlatform(raycastHit.transform);
+=======
+            Vector2 rayVector = new Vector2(rayOrigin.x, rayOrigin.y) + mapToPlayerOrientation(new Vector2( (i * _horizontalDistanceBetweenRays), 0));// + (Vector2)_transform.position;
+            Debug.DrawRay (rayVector, rayDirection * rayDistance, Color.green);
+
+			var raycastHit = Physics2D.Raycast(rayVector, rayDirection, rayDistance, PlatformMask);
+			if (!raycastHit)
+				continue;
+
+            if(raycastHit.transform.gameObject.layer == LayerMask.NameToLayer("Platform") && !isGoingUp) CheckPlatform(raycastHit.transform);
+>>>>>>> master
             //CheckPlatform(raycastHit.transform);
 
 
