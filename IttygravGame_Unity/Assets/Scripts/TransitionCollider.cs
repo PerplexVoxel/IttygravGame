@@ -9,7 +9,7 @@ public class TransitionCollider : MonoBehaviour {
     private Vector3[,] CooridinateMatrix; //This holds the transformations for the collider
     private int[] positionOffset = new int[] { 0, 1, 2, 3 };
     public int lockframes;
-    private int locked;
+    public int locked;
     public LayerMask plateformMask;
     public float detectionBuffer;
     // Use this for initialization
@@ -18,7 +18,7 @@ public class TransitionCollider : MonoBehaviour {
         locked = 0;
     }
 
-    private void FixedUpdate()
+    private void LateUpdate()
     {
         checkCollision();
         Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[positionOffset[0], 0], CooridinateMatrix[positionOffset[0], 1], Color.red);
@@ -93,41 +93,49 @@ public class TransitionCollider : MonoBehaviour {
     
     private void transition(int direction)
     {
+        bool success = false;
         if (direction > 0)
         {
-            for (int i = 0; i < 4; i++)
+            success = this.GetComponent<CharacterController2D>().CheckPlatform(1);
+            if(success)
             {
-                positionOffset[i] += 2;
-                Debug.Log(positionOffset[i]);
-            }
-            for (int i = 0; i < 4; i++)
-            {
-                if (positionOffset[i] > 15)
+                locked = lockframes;
+                for (int i = 0; i < 4; i++)
                 {
-                    positionOffset[i] -= 16;
-                   
+                    positionOffset[i] += 2;
+                    Debug.Log(positionOffset[i]);
                 }
-                Debug.Log(positionOffset[i]);
+                for (int i = 0; i < 4; i++)
+                {
+                    if (positionOffset[i] > 15)
+                    {
+                        positionOffset[i] -= 16;
+
+                    }
+                    Debug.Log(positionOffset[i]);
+                }
             }
-            this.GetComponent<CharacterController2D>().CheckPlatform(1);
-            locked = lockframes;
+            
         }
         else{
-            for (int i = 0; i < 4; i++)
+            success = this.GetComponent<CharacterController2D>().CheckPlatform(-1);
+            if (success)
             {
-                positionOffset[i] -= 2;
-                Debug.Log(positionOffset[i]);
-            }
-            for (int i = 0; i < 4; i++)
-            {
-                if (positionOffset[i] < 0)
+                locked = lockframes;
+                for (int i = 0; i < 4; i++)
                 {
-                    positionOffset[i] += 16;
+                    positionOffset[i] -= 2;
+                    Debug.Log(positionOffset[i]);
                 }
-                Debug.Log(positionOffset[i]);
-            }
-            this.GetComponent<CharacterController2D>().CheckPlatform(-1);
-            locked = lockframes;
+                for (int i = 0; i < 4; i++)
+                {
+                    if (positionOffset[i] < 0)
+                    {
+                        positionOffset[i] += 16;
+                    }
+                    Debug.Log(positionOffset[i]);
+                }
+            }            
         }
     }
 

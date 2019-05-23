@@ -309,9 +309,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5da957978efcff54daf09309767deaea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentAngle: 0
   PlatformMask:
     serializedVersion: 2
     m_Bits: 768
+  PlatformOnly:
+    serializedVersion: 2
+    m_Bits: 0
   DefaultParameters:
     Mass: 10
     Gravity: {x: 0, y: -1}
@@ -323,6 +327,7 @@ MonoBehaviour:
     JumpFrequency: 0.25
     JumpMagnitude: 12
   MotionFrozen: 0
+  unclipDistance: 0
 --- !u!114 &593383433
 MonoBehaviour:
   m_ObjectHideFlags: 0

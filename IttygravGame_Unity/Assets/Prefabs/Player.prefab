@@ -255,7 +255,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.94, y: 1.28}
+  m_Size: {x: 1.28, y: 1.28}
   m_EdgeRadius: 0
 --- !u!82 &82057229452155404
 AudioSource:
@@ -363,9 +363,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5da957978efcff54daf09309767deaea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentAngle: 0
   PlatformMask:
     serializedVersion: 2
     m_Bits: 768
+  PlatformOnly:
+    serializedVersion: 2
+    m_Bits: 256
   DefaultParameters:
     Mass: 10
     Gravity: {x: 0, y: -1}
@@ -377,6 +381,7 @@ MonoBehaviour:
     JumpFrequency: 0.25
     JumpMagnitude: 13
   MotionFrozen: 0
+  unclipDistance: 0.01
 --- !u!114 &114501502790141700
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -430,7 +435,7 @@ MonoBehaviour:
   plateformMask:
     serializedVersion: 2
     m_Bits: 256
-  detectionBuffer: 0.02
+  detectionBuffer: 0.1
 --- !u!212 &212126234127216082
 SpriteRenderer:
   m_ObjectHideFlags: 1

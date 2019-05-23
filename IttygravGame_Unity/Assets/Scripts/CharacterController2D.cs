@@ -13,8 +13,12 @@ public class CharacterController2D : MonoBehaviour
     private float slantY;
     public int currentAngle;
     private float[ , ] sudoTransform;
+    private Transform rotationVector;
+    private bool rotationLock;
+    private ContactFilter2D cfilter;
 
-	public LayerMask PlatformMask; 
+	public LayerMask PlatformMask;
+    public LayerMask PlatformOnly;
 	public ControllerParameters2D DefaultParameters;
 
 	public ControllerState2D State { get; private set; }
@@ -73,10 +77,12 @@ public class CharacterController2D : MonoBehaviour
 		_horizontalDistanceBetweenRays = colliderWidth / (TotalVerticalRays - 1);
 
 		var colliderHeight = _boxCollider.size.y * Mathf.Abs (transform.localScale.y) - (2 * SkinWidth);
-		_verticalDistanceBetweenRays = colliderHeight / (TotalHorizontalRays - 1);
+		_verticalDistanceBetweenRays = colliderHeight / (TotalHorizontalRays -1); //current working point
 
+        rotationVector = transform;
         calcSlant();
-        calcSudoTransform();
+        cfilter.layerMask = PlatformOnly;
+        //calcSudoTransform();
 	}
 
     private void calcSudoTransform()
@@ -147,6 +153,12 @@ public class CharacterController2D : MonoBehaviour
         //_velocity.y += -25 * Time.deltaTime;
 
         if(!MotionFrozen) Move (Velocity * Time.deltaTime);
+
+        this.GetComponent<BoxCollider2D>().OverlapCollider(ContactFilter2D.NoFilter(), hits);
+        if (hits != null)
+        {
+
+        }
 	}
 
     float xx = 1;
@@ -154,9 +166,24 @@ public class CharacterController2D : MonoBehaviour
     float yx = 0;
     float yy = 1;
     float lastPlayerAngle = 0;
+
+    Collider2D[] hits;
+    public float unclipDistance;
+    public void unclip()
+    {     
+        do {
+            this.GetComponent<BoxCollider2D>().OverlapCollider(cfilter, hits);
+            if (hits != null)
+                transform.position = transform.position + (Vector3)mapToPlayerOrientation(new Vector3(0, unclipDistance, 0));
+
+        }while (hits != null) ;
+    }
+
     public void RotatePlayer(float rotationAngle)
     {
         transform.eulerAngles = new Vector3(0, 0, rotationAngle);
+        unclip();
+        //rotationVector.eulerAngles = new Vector3(0, 0, rotationAngle);
         /*currentAngle = currentAngle + direction;
 
         if (currentAngle > 7)
@@ -172,10 +199,12 @@ public class CharacterController2D : MonoBehaviour
 
     private Vector2 mapToPlayerOrientation(Vector3 adjustingVector)
     {
+        //Debug.Log(rotationVector.eulerAngles.z);
         if (transform.eulerAngles.z != lastPlayerAngle)
+        //if (rotationVector.eulerAngles.z != lastPlayerAngle)
         {
 
-            float angle = transform.eulerAngles.z ;
+            float angle = transform.eulerAngles.z;
             float angle2 = Mathf.PI * (angle + 90) / 180;
             angle = angle * Mathf.PI / 180;
 
@@ -186,7 +215,7 @@ public class CharacterController2D : MonoBehaviour
 
             lastPlayerAngle = transform.eulerAngles.z;
         }
-
+        //Debug.Log(rotationVector.eulerAngles.z);
 
         return new Vector2(adjustingVector.x * xx + adjustingVector.y * yx, adjustingVector.x * xy + adjustingVector.y * yy);
 
@@ -263,7 +292,6 @@ public class CharacterController2D : MonoBehaviour
 		var halfWidth = (_boxCollider.size.x * _localScale.x) / 2f;
 		var rayOrigin = isRight ? _raycastBottomRight : _raycastBottomLeft;
         int direction = isRight ? 1 : -1;
-        Debug.Log("PingA");
         if (isRight) {
 			
             rayOrigin = rayOrigin - (Vector3) mapToPlayerOrientation(new Vector2(halfWidth - SkinWidth, 0));
@@ -286,7 +314,6 @@ public class CharacterController2D : MonoBehaviour
 
             if (iset < slantX)
             {
-                Debug.Log("Ping");
                 rayVector = (Vector2)rayOrigin + mapToPlayerOrientation(deltaMovement) + mapToPlayerOrientation(new Vector2( (slantX - (iset * direction)), i * _verticalDistanceBetweenRays));
             }
             else
@@ -340,7 +367,6 @@ public class CharacterController2D : MonoBehaviour
 
             if (iset < slantX)
             {
-                Debug.Log("Ping");
                 //rayVector = (Vector2)rayOrigin + mapToPlayerOrientation(new Vector2((slantX - (iset * direction)),0)) + mapToPlayerOrientation(deltaMovement) + mapToPlayerOrientation(new Vector2(0, i * _verticalDistanceBetweenRays));
                 rayVector = new Vector2(rayOrigin.x, rayOrigin.y) + mapToPlayerOrientation(new Vector2(((slantX * direction) - (iset * direction)), (i * _verticalDistanceBetweenRays)));
             }
@@ -395,8 +421,9 @@ public class CharacterController2D : MonoBehaviour
         //var rayDistance = Vector3.Magnitude(deltaMovement + (Vector2)(SkinWidth * transform.up));
         var rayDirection = isGoingUp ? transform.up : -transform.up;
 		var rayOrigin = isGoingUp ? _raycastTopLeft : _raycastBottomLeft;
-
-
+        /*if (isGoingUp)
+            rotationLock = true;
+            */
 
         float iset;
 		for (var i = 0; i < TotalVerticalRays; i++) {
@@ -425,7 +452,7 @@ public class CharacterController2D : MonoBehaviour
             Debug.DrawRay (rayVector, rayDirection * rayDistance, Color.green);
 
 			var raycastHit = Physics2D.Raycast(rayVector, rayDirection, rayDistance, PlatformMask);
-			if (!raycastHit)
+            if (!raycastHit)
 				continue;
 
             //if(raycastHit.transform.gameObject.layer == LayerMask.NameToLayer("Platform")) CheckPlatform(raycastHit.transform);
@@ -452,35 +479,44 @@ public class CharacterController2D : MonoBehaviour
 
 			if (rayDistance < SkinWidth + 0.002f) {
 				break;
+                rotationLock = false;
 			}
 		}
 	}
 
-    public void CheckPlatform(int direction)
+    public bool CheckPlatform(int direction)
     {
         //if (platform.eulerAngles.z != transform.eulerAngles.z)
         //{
         //    RotatePlayer(platform.eulerAngles.z);
         //}
 
-        
-        if (direction > 0) {
-
-            currentAngle += 45;
-            if (currentAngle > 360)
-            {
-                currentAngle -= 360;
-            }
-            RotatePlayer(currentAngle);
-        }
-        if (direction < 0)
+        if (!rotationLock)
         {
-            currentAngle -= 45;
-            if (currentAngle < 0)
+            if (direction > 0)
             {
-                currentAngle += 360;
+
+                currentAngle += 45;
+                if (currentAngle > 360)
+                {
+                    currentAngle -= 360;
+                }
+                RotatePlayer(currentAngle);
             }
-            RotatePlayer(currentAngle);
+            if (direction < 0)
+            {
+                currentAngle -= 45;
+                if (currentAngle < 0)
+                {
+                    currentAngle += 360;
+                }
+                RotatePlayer(currentAngle);
+            }
+            return true;
+        }
+        else
+        {
+            return false;
         }
         
         /*if (platform.tag == "Platform090") RotatePlayer(90);
