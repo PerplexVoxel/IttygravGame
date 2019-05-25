@@ -9,6 +9,7 @@ public class TransitionCollider : MonoBehaviour
     private float y; // ^^                                                  ^^
     private Vector3[,] CooridinateMatrix; //This holds the transformations for the collider
     public int[] positionOffset = new int[] { 0, 1, 2, 3 };
+    public bool rotationOffset = false;
     public int lockframes;
     private int locked;
     public LayerMask plateformMask;
@@ -17,15 +18,16 @@ public class TransitionCollider : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        //startOrientation(StartingOrientation);
         calcRayMatrix();
         locked = 0;
-        startOrientation(StartingOrientation);
+        
     }
 
     private void FixedUpdate()
     {
         //checkCollision();
-        //Debug.Log(positionOffset[0] + ", " + positionOffset[1] + ", " + positionOffset[2] + ", " + positionOffset[3]);
+        Debug.Log(positionOffset[0] + ", " + positionOffset[1] + ", " + positionOffset[2] + ", " + positionOffset[3]);
         Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[positionOffset[0], 0], CooridinateMatrix[positionOffset[0], 1], Color.red);
         Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[positionOffset[1], 0], CooridinateMatrix[positionOffset[1], 1], Color.red);
         Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[positionOffset[2], 0], CooridinateMatrix[positionOffset[2], 1], Color.red);
@@ -135,7 +137,7 @@ public class TransitionCollider : MonoBehaviour
         //    this.GetComponent<CharacterController2D>().CheckPlatform(-1, platform);
         //    locked = lockframes;
         //}
-
+        if (rotationOffset) direction = -direction;
         bool success = false;
         if (direction > 0)
         {
