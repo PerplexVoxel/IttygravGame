@@ -43,12 +43,27 @@ public class MovingPlatform : MonoBehaviour {
     private void checkCollidingObjects(List<Transform> collided, Vector3 displacement){
         for (int i = 0; i < collided.Count; i+= 1){
             if(!handledCollidingObjects.Contains(collided[i])){
+                if(displacement.x < 0)
+                {
+                    if(collided[i].position.x < transform.position.x + 2.06f)
+                    {
+                        collided[i].position += displacement;
+                        handledCollidingObjects.Add(collided[i]);
+                        checkCollidingObjects(collided[i].GetComponent<CrateController2D>().GetCollidingObject(), displacement);
+                    }
+                }else if(displacement.x > 0)
+                {
+                    if (collided[i].position.x > transform.position.x - 2.06f)
+                    {
+                        collided[i].position += displacement;
+                        handledCollidingObjects.Add(collided[i]);
+                        checkCollidingObjects(collided[i].GetComponent<CrateController2D>().GetCollidingObject(), displacement);
+                    }
+                }
                 
-                collided[i].position += displacement;
-                handledCollidingObjects.Add(collided[i]);
-                checkCollidingObjects(collided[i].GetComponent<CrateController2D>().GetCollidingObject(), displacement);
             }
         }
+        collided.Clear();
     }
 
 	private void OnCollisionStay2D(Collision2D collision)

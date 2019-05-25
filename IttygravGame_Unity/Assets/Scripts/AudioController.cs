@@ -12,6 +12,7 @@ public class AudioController : MonoBehaviour
     public float[] PlayerFXVolumeScale;
 
     private bool muteFX = false;
+    private int currentFX = 0;
     
 	// Use this for initialization
 	void Start () {
@@ -49,9 +50,15 @@ public class AudioController : MonoBehaviour
         if(index < PlayerFX.Length && index < PlayerFXVolumeScale.Length){
             AudioSource playerAudio = GameObject.FindGameObjectWithTag("Player").GetComponentInParent<AudioSource>();
             playerAudio.mute = muteFX;
-            playerAudio.volume = PlayerFXVolumeScale[index] * FXVolume;
-            playerAudio.clip = PlayerFX[index];
-            playerAudio.Play();
+            if(index != 2 || currentFX != 2 || (currentFX == 2 && !playerAudio.isPlaying))
+            {
+                playerAudio.volume = PlayerFXVolumeScale[index] * FXVolume;
+                playerAudio.clip = PlayerFX[index];
+                playerAudio.Play();
+            }
+            
+
+            currentFX = index;
         }
     }
 }

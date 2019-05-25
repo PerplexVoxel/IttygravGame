@@ -9,6 +9,8 @@ public class LevelHandler : MonoBehaviour {
     public string LevelName;
     public string NextLevel;
 
+    public GameObject LoadingPanel;
+
     public GameObject LevelTitle;
     public GameObject WinnerSplash;
     public float TitleWait = 2.0f;
@@ -44,20 +46,25 @@ public class LevelHandler : MonoBehaviour {
     // called second
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        levelStartTime = Time.fixedTime;
-        Text levelTitleText = null;
-        if(LevelTitle ) levelTitleText = LevelTitle.transform.GetChild(0).GetComponent<Text>();
-        if(levelTitleText) levelTitleText.text = LevelName;
+        if (SceneManager.GetActiveScene().name == "MainMenu") Destroy(gameObject);
+        else
+        {
+            levelStartTime = Time.fixedTime;
+            Text levelTitleText = null;
+            if (LevelTitle) levelTitleText = LevelTitle.transform.GetChild(0).GetComponent<Text>();
+            if (levelTitleText) levelTitleText.text = LevelName;
 
 
 
-        if(MenuPanel) MenuPanel.SetActive(false);
+            if (MenuPanel) MenuPanel.SetActive(false);
 
-        ShowArrowToggle(ShowArrow);
-        miniMap = null;
-        ShowMiniMapToggle(ShowMiniMap);
+            ShowArrowToggle(ShowArrow);
+            miniMap = null;
+            ShowMiniMapToggle(ShowMiniMap);
 
-        
+        }
+
+
     }
 
     private void Start()
@@ -153,6 +160,10 @@ public class LevelHandler : MonoBehaviour {
         LevelInfo li = getLevel(SceneManager.GetActiveScene().name);
         setupNextLevel(li);
         LevelName = getLevel(li.NextLevel).LevelTitle;
+
+        
+        if(LoadingPanel) LoadingPanel.SetActive(true);
+
         SceneManager.LoadScene(NextLevel);
     }
 
@@ -198,7 +209,7 @@ public class LevelHandler : MonoBehaviour {
         LevelComplete = isTriggered;
         WinnerSplash.SetActive(LevelComplete);
         FindObjectOfType<Player>().ControlsFrozen = isTriggered;
-        FindObjectOfType<Player>().PositionFrozen = isTriggered;
+        //FindObjectOfType<Player>().PositionFrozen = isTriggered;
 
     }
 
@@ -223,8 +234,9 @@ public class LevelHandler : MonoBehaviour {
 [System.Serializable]
 public class LevelInfo
 {
-    public string SceneName;
     public string LevelTitle;
+    public string SceneName;
+    
     public string NextLevel;
     private Button button;
 

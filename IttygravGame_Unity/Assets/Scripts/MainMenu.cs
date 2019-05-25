@@ -5,13 +5,52 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour {
 
-	public void LoadLevel(string level)
+    public GameObject AboutPanel;
+    public GameObject HowToPlay;
+
+    public GameObject LoadingPanel;
+
+    private bool loadingNextLevel;
+    private string loadingLevel;
+    private float loadingStart;
+    private void Start()
     {
-        SceneManager.LoadScene(level);
+        HowToPlay.SetActive(false);
+        AboutPanel.SetActive(false);
+        LoadingPanel.SetActive(false);
+
+        if (GameObject.FindGameObjectWithTag("LevelHandler")) Destroy(GameObject.FindGameObjectWithTag("LevelHandler"));
+    }
+
+   
+
+    public void LoadLevel(string level)
+    {
+        HowToPlay.SetActive(false);
+        AboutPanel.SetActive(false);
+        LoadingPanel.SetActive(true);
+        loadingStart = Time.fixedTime;
+        
     }
 
     public void LoadFirstLevel()
     {
+        HowToPlay.SetActive(false);
+        AboutPanel.SetActive(false);
+        LoadingPanel.SetActive(true);
+        
         SceneManager.LoadScene(1);
+    }
+
+    public void ToggleAboutPanel()
+    {
+        HowToPlay.SetActive(false);
+        AboutPanel.SetActive(!AboutPanel.activeSelf);
+    }
+
+    public void ToggleHowToPlay()
+    {
+        AboutPanel.SetActive(false);
+        HowToPlay.SetActive(!HowToPlay.activeSelf);
     }
 }

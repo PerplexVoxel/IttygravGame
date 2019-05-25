@@ -50,6 +50,11 @@ public class CrateController2D : MonoBehaviour {
         //GetComponent<Rigidbody2D>().velocity = myDeltaMovement;
         GetComponent<Rigidbody2D>().AddForce(normalForce );
 
+        if (GameObject.FindGameObjectWithTag("AudioSource"))
+        {
+            GameObject.FindGameObjectWithTag("AudioSource").GetComponent<AudioController>().PlayPlayerFX(2);
+        }
+
         return deltaMovement;
     }
 

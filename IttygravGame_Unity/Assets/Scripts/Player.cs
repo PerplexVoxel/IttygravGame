@@ -35,7 +35,8 @@ public class Player : MonoBehaviour
 	{
         if (!IsDead)
         {
-            if (!ControlsFrozen) HandleInput();
+            
+            HandleInput();
             _controller.MotionFrozen = PositionFrozen;
         }
 		
@@ -78,29 +79,46 @@ public class Player : MonoBehaviour
 	}
 
 	private void HandleInput(){
-		if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) {
+        if (!ControlsFrozen)
+        {
+            if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+            {
 
-			_normalizedHorizontalSpeed = 1;
-			if (!_isFacingRight) {
-				Flip ();
-			}
+                _normalizedHorizontalSpeed = 1;
+                if (!_isFacingRight)
+                {
+                    Flip();
+                }
 
-		} else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) {
-			_normalizedHorizontalSpeed = -1;
-			if (_isFacingRight) {
-				Flip ();
-			}
-		} else {
-			_normalizedHorizontalSpeed = 0;
-		}
+            }
+            else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+            {
+                _normalizedHorizontalSpeed = -1;
+                if (_isFacingRight)
+                {
+                    Flip();
+                }
+            }
+            else
+            {
+                _normalizedHorizontalSpeed = 0;
+            }
 
-		if (_controller.CanJump && Input.GetKeyDown (KeyCode.Space)) {
-			_controller.Jump();
+            if (_controller.CanJump && Input.GetKeyDown(KeyCode.Space))
+            {
+                _controller.Jump();
 
-            //GetComponent<AudioSource>().clip = JumpAudio;
-            //GetComponent<AudioSource>().Play();
-            GameObject.FindGameObjectWithTag("AudioSource").GetComponent<AudioController>().PlayPlayerFX(0);
-		}
+                //GetComponent<AudioSource>().clip = JumpAudio;
+                //GetComponent<AudioSource>().Play();
+                GameObject.FindGameObjectWithTag("AudioSource").GetComponent<AudioController>().PlayPlayerFX(0);
+            }
+        }
+        else
+        {
+            _normalizedHorizontalSpeed = 0;
+        }
+        
+        
 	}
 
 	private void Flip(){

@@ -13,17 +13,19 @@ public class TransitionCollider : MonoBehaviour
     private int locked;
     public LayerMask plateformMask;
     public float detectionBuffer;
+    public int StartingOrientation = 0;
     // Use this for initialization
     void Start()
     {
         calcRayMatrix();
         locked = 0;
+        startOrientation(StartingOrientation);
     }
 
     private void FixedUpdate()
     {
-        checkCollision();
-        Debug.Log(positionOffset[0] + ", " + positionOffset[1] + ", " + positionOffset[2] + ", " + positionOffset[3]);
+        //checkCollision();
+        //Debug.Log(positionOffset[0] + ", " + positionOffset[1] + ", " + positionOffset[2] + ", " + positionOffset[3]);
         Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[positionOffset[0], 0], CooridinateMatrix[positionOffset[0], 1], Color.red);
         Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[positionOffset[1], 0], CooridinateMatrix[positionOffset[1], 1], Color.red);
         Debug.DrawRay(this.GetComponent<Rigidbody2D>().transform.position + CooridinateMatrix[positionOffset[2], 0], CooridinateMatrix[positionOffset[2], 1], Color.red);
@@ -96,46 +98,107 @@ public class TransitionCollider : MonoBehaviour
 
     private void transition(int direction, Transform platform)
     {
+        //if (direction > 0)
+        //{
+        //    for (int i = 0; i < 4; i++)
+        //    {
+        //        positionOffset[i] += 2;
+        //        //Debug.Log(positionOffset[i]);
+        //    }
+        //    for (int i = 0; i < 4; i++)
+        //    {
+        //        if (positionOffset[i] > 15)
+        //        {
+        //            positionOffset[i] -= 16;
+
+        //        }
+        //        //Debug.Log(positionOffset[i]);
+        //    }
+        //    this.GetComponent<CharacterController2D>().CheckPlatform(1, platform);
+        //    locked = lockframes;
+        //}
+        //else
+        //{
+        //    for (int i = 0; i < 4; i++)
+        //    {
+        //        positionOffset[i] -= 2;
+        //        //Debug.Log(positionOffset[i]);
+        //    }
+        //    for (int i = 0; i < 4; i++)
+        //    {
+        //        if (positionOffset[i] < 0)
+        //        {
+        //            positionOffset[i] += 16;
+        //        }
+        //        //Debug.Log(positionOffset[i]);
+        //    }
+        //    this.GetComponent<CharacterController2D>().CheckPlatform(-1, platform);
+        //    locked = lockframes;
+        //}
+
+        bool success = false;
         if (direction > 0)
         {
-            for (int i = 0; i < 4; i++)
+            success = this.GetComponent<CharacterController2D>().CheckPlatform(1, platform);
+            if (success)
             {
-                positionOffset[i] += 2;
-                //Debug.Log(positionOffset[i]);
-            }
-            for (int i = 0; i < 4; i++)
-            {
-                if (positionOffset[i] > 15)
+                locked = lockframes;
+                for (int i = 0; i < 4; i++)
                 {
-                    positionOffset[i] -= 16;
-
+                    positionOffset[i] += 2;
+                    //Debug.Log(positionOffset[i]);
                 }
-                //Debug.Log(positionOffset[i]);
+                for (int i = 0; i < 4; i++)
+                {
+                    if (positionOffset[i] > 15)
+                    {
+                        positionOffset[i] -= 16;
+
+                    }
+                    //Debug.Log(positionOffset[i]);
+                }
             }
-            this.GetComponent<CharacterController2D>().CheckPlatform(1, platform);
-            locked = lockframes;
+
         }
         else
         {
-            for (int i = 0; i < 4; i++)
+            success = this.GetComponent<CharacterController2D>().CheckPlatform(-1, platform);
+            if (success)
             {
-                positionOffset[i] -= 2;
-                //Debug.Log(positionOffset[i]);
-            }
-            for (int i = 0; i < 4; i++)
-            {
-                if (positionOffset[i] < 0)
+                locked = lockframes;
+                for (int i = 0; i < 4; i++)
                 {
-                    positionOffset[i] += 16;
+                    positionOffset[i] -= 2;
+                    //Debug.Log(positionOffset[i]);
                 }
-                //Debug.Log(positionOffset[i]);
+                for (int i = 0; i < 4; i++)
+                {
+                    if (positionOffset[i] < 0)
+                    {
+                        positionOffset[i] += 16;
+                    }
+                    //Debug.Log(positionOffset[i]);
+                }
             }
-            this.GetComponent<CharacterController2D>().CheckPlatform(-1, platform);
-            locked = lockframes;
         }
     }
 
-    private void checkCollision()
+    public void startOrientation(int position)
+    {
+        /**
+         * input the number of default transitions in counter clockwise direction.
+         */
+        for (int i = 0; i < 4; i++)
+        {
+            positionOffset[i] += position;
+            if (positionOffset[i] > 15)
+            {
+                positionOffset[i] -= 16;
+            }
+        }
+    }
+
+    public void checkCollision()
     {
         if (locked == 0)
         {
@@ -146,29 +209,15 @@ public class TransitionCollider : MonoBehaviour
 
             if (lRay && lRay.distance <= detectionBuffer)
             {
+                this.GetComponent<Player>().ControlsFrozen = true;
                 transition(-1, lRay.transform);
             }
             if (rRay && rRay.distance <= detectionBuffer)
             {
+                this.GetComponent<Player>().ControlsFrozen = true;
                 transition(1, rRay.transform);
             }
 
-            /*if (dis0 == 0)
-            {
-                transition(1);
-            }
-            else if (dis3 == 0)
-            {
-                transition(-1);
-            }
-            else if (dis1 > dis0 && dis1 != dis2)
-            {
-                transition(-1);
-            }
-            else if (dis2 > dis3 && dis1 != dis2)
-            {
-                transition(1);
-            }*/
         }
         else
         {

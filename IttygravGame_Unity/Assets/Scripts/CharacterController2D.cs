@@ -13,8 +13,12 @@ public class CharacterController2D : MonoBehaviour
     private float slantY;
     public int currentAngle;
     private float[,] sudoTransform;
+    private Transform rotationVector;
+    private bool rotationLock;
+    private ContactFilter2D cfilter;
 
     public LayerMask PlatformMask;
+    public LayerMask PlatformOnly;
     public ControllerParameters2D DefaultParameters;
 
     public ControllerState2D State { get; private set; }
@@ -75,8 +79,12 @@ public class CharacterController2D : MonoBehaviour
         var colliderHeight = _boxCollider.size.y * Mathf.Abs(transform.localScale.y) - (2 * SkinWidth);
         _verticalDistanceBetweenRays = colliderHeight / (TotalHorizontalRays - 1);
 
+        //calcSlant();
+        //calcSudoTransform();
+
+        rotationVector = transform;
         calcSlant();
-        calcSudoTransform();
+        cfilter.layerMask = PlatformOnly;
     }
 
     private void calcSudoTransform()
@@ -108,7 +116,7 @@ public class CharacterController2D : MonoBehaviour
 
     public void calcSlant()
     {
-        
+
         slantX = this.GetComponent<BoxCollider2D>().size.y / (2 + Mathf.Sqrt(2));
         slantY = this.GetComponent<BoxCollider2D>().size.y - ((2 * this.GetComponent<BoxCollider2D>().size.y) / (2 + Mathf.Sqrt(2)));
     }
@@ -147,7 +155,11 @@ public class CharacterController2D : MonoBehaviour
         //Debug.Log("Gravity: " + gravity);
         //_velocity.y += -25 * Time.deltaTime;
 
-        if (!MotionFrozen) Move(Velocity * Time.deltaTime);
+        //if (!MotionFrozen) Move(Velocity * Time.deltaTime);
+
+        this.GetComponent<TransitionCollider>().checkCollision();
+        if(!MotionFrozen) Move(Velocity * Time.deltaTime);
+        this.GetComponent<Player>().ControlsFrozen = false;
     }
 
     float xx = 1;
@@ -158,6 +170,8 @@ public class CharacterController2D : MonoBehaviour
     public void RotatePlayer(float rotationAngle)
     {
         transform.eulerAngles = new Vector3(0, 0, rotationAngle);
+        if (!State.IsGrounded)
+            this.transform.position = this.transform.position + (Vector3)mapToPlayerOrientation(new Vector3(0, .05f, 0));
         /*currentAngle = currentAngle + direction;
         if (currentAngle > 7)
             currentAngle -= 8;
@@ -206,13 +220,15 @@ public class CharacterController2D : MonoBehaviour
 
             CalculateRayOrigins();
 
+            MoveVertically(ref deltaMovement);
+
             if (Mathf.Abs(deltaMovement.x) > 0.001f)
             {
                 MoveHorizontally(ref deltaMovement);
             }
 
 
-            MoveVertically(ref deltaMovement);
+
 
             //CorrectHorizontalPlacement(ref deltaMovement, true);
             //CorrectHorizontalPlacement(ref deltaMovement, false);
@@ -361,12 +377,12 @@ public class CharacterController2D : MonoBehaviour
             Debug.DrawRay(rayVector, rayDirection * rayDistance, Color.red);
 
             var rayCastHit = Physics2D.Raycast(rayVector, rayDirection, rayDistance, PlatformMask);
-            
+
 
             if (!rayCastHit)
                 continue;
 
-            
+
 
             Vector2 collisionDistance = new Vector2(Mathf.Sign(deltaMovement.x) * Vector3.Distance(new Vector2(rayCastHit.point.x, rayCastHit.point.y), rayVector), 0);
 
@@ -377,10 +393,11 @@ public class CharacterController2D : MonoBehaviour
                 CrateController2D crate = rayCastHit.transform.gameObject.GetComponent<CrateController2D>();
 
                 Vector2 playerNormal = -transform.up;
-                if(Vector3.Dot(crate.Parameters.Gravity, -transform.up) < 0){
+                if (Vector3.Dot(crate.Parameters.Gravity, -transform.up) < 0)
+                {
                     playerNormal = Vector2.zero;
                 }
-                 // mapToPlayerOrientation(-transform.up);
+                // mapToPlayerOrientation(-transform.up);
                 //Debug.Log(playerNormal.ToString());
                 collisionDistance.x = Mathf.Sign(collisionDistance.x) * Vector3.Magnitude(crate.Move(mapToPlayerOrientation(new Vector2(deltaMovement.x, 0)), Parameters.Mass, Parameters.BoxNormalForce * playerNormal));
 
@@ -501,40 +518,37 @@ public class CharacterController2D : MonoBehaviour
     string currentPlatformTag = "";
     static readonly string[] platformTags = { "Platform000", "Platform045", "Platform090", "Platform135", "Platform180", "Platform225", "Platform270", "Platform315" };
     //private enum platformTags { Platform000, Platform045, Platform090, Platform135, Platform180, Platform225, Platform270, Platform315 };
-    public void CheckPlatform(int direction, Transform platform)
+    public bool CheckPlatform(int direction, Transform platform)
     {
-        //if (platform.eulerAngles.z != transform.eulerAngles.z)
-        //{
-        //    RotatePlayer(platform.eulerAngles.z);
-        //}
-        Debug.Log(currentPlatformTag + "->" + platform.tag );
+
+        //Debug.Log(currentPlatformTag + "->" + platform.tag);
         int currentIndex = getPlatformTagIndex(currentPlatformTag);
         int nextPlatform = getPlatformTagIndex(platform.tag);
-        if(currentIndex < 0 || nextPlatform < 0)
+        if (currentIndex < 0 || nextPlatform < 0)
         {
             Debug.Log("currentIndex = " + currentIndex + "| nextPlatform = " + nextPlatform);
-            return;
+            return false;
         }
 
         int rightIndex = (currentIndex + 1) % platformTags.Length;
         int leftIndex = currentIndex - 1;
         if (leftIndex < 0) leftIndex = platformTags.Length - 1;
 
-        if(nextPlatform == leftIndex || nextPlatform == rightIndex)
+        if (nextPlatform == leftIndex || nextPlatform == rightIndex)
         {
             currentPlatformTag = platform.tag;
         }
         else
         {
             Debug.Log("Wrong Platform Error");
-            return;
+            return false;
         }
 
-        
+
 
         if (direction > 0)
         {
-            
+
             currentAngle += 45;
             if (currentAngle > 360)
             {
@@ -551,21 +565,41 @@ public class CharacterController2D : MonoBehaviour
             }
             RotatePlayer(currentAngle);
         }
+        return true;
 
-        /*if (platform.tag == "Platform090") RotatePlayer(90);
-        else if (platform.tag == "Platform135") RotatePlayer(135);
-        else if (platform.tag == "Platform180") RotatePlayer(180);
-        else if (platform.tag == "Platform225") RotatePlayer(225);
-        else if (platform.tag == "Platform270") RotatePlayer(270);
-        else if (platform.tag == "Platform315") RotatePlayer(315);
-        else if (platform.tag == "Platform000") RotatePlayer(0);
-        else if (platform.tag == "Platform045") RotatePlayer(45);*/
+        //    if (!rotationLock)
+        //    {
+        //        if (direction > 0)
+        //        {
+
+        //            currentAngle += 45;
+        //            if (currentAngle > 360)
+        //            {
+        //                currentAngle -= 360;
+        //            }
+        //            RotatePlayer(currentAngle);
+        //        }
+        //        if (direction < 0)
+        //        {
+        //            currentAngle -= 45;
+        //            if (currentAngle < 0)
+        //            {
+        //                currentAngle += 360;
+        //            }
+        //            RotatePlayer(currentAngle);
+        //        }
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        return false;
+        //    }
     }
 
     private int getPlatformTagIndex(string tag)
     {
         int index = -1;
-        for(int i = 0; i < platformTags.Length; i += 1)
+        for (int i = 0; i < platformTags.Length; i += 1)
         {
             if (platformTags[i].Equals(tag)) index = i;
         }

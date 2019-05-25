@@ -24,7 +24,9 @@ public class LazerScript : MonoBehaviour {
                 HitPlayer.transform.position = PlayerRespawnPoint.position;
                 HitPlayer.PositionFrozen = false;
                 hasPlayer = false;
-            }else if(Vector3.Distance(transform.position, HitPlayer.transform.position) < 0.3)
+                
+            }
+            else if(Mathf.Abs(transform.position.y - HitPlayer.transform.position.y) < 0.1)
             {
                 HitPlayer.PositionFrozen = true;
             }
@@ -52,7 +54,10 @@ public class LazerScript : MonoBehaviour {
                 hasPlayer = true;
                 frozeTime = Time.fixedTime;
             }
-            
+            if (GameObject.FindGameObjectWithTag("AudioSource"))
+            {
+                GameObject.FindGameObjectWithTag("AudioSource").GetComponent<AudioController>().PlayPlayerFX(3);
+            }
 
             //
         }
