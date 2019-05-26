@@ -25,6 +25,7 @@ public class CameraController : MonoBehaviour {
 
         if (FollowPlayer)
         {
+            DisplayArrow = true;
             followPlayer();
             if (POI) if(POI.ZoomIn) zoomIn();
         }
@@ -66,6 +67,7 @@ public class CameraController : MonoBehaviour {
             GetComponent<Camera>().orthographicSize = POI.CameraSize;
         }
 
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, POI.PanTarget.transform.rotation, RotationSmoothing * Time.deltaTime);
         //transform.position = Vector3.MoveTowards(transform.position, POI.PanTarget.transform.position, POI.PanRate * Time.deltaTime);
         transform.position = Vector3.MoveTowards(transform.position, POI.PanTarget.transform.position, dollyRate * Time.deltaTime);
     }

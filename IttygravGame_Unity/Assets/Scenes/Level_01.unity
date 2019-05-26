@@ -463,14 +463,11 @@ MonoBehaviour:
     NextLevel: Level_04
   - LevelTitle: SEVEN
     SceneName: Level_04
-    NextLevel: Level_C4
-  - LevelTitle: Eight
+    NextLevel: Level_C7
+  - LevelTitle: EIGHT
     SceneName: Level_C4
     NextLevel: Level_05
   - LevelTitle: NINE
-    SceneName: Level_05
-    NextLevel: Level_C7
-  - LevelTitle: TEN
     SceneName: Level_C7
     NextLevel: MainMenu
   - LevelTitle: Main Menu
@@ -11070,7 +11067,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1102447248590558, guid: eb036c24734d34341a5225e1be6148a2, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eb036c24734d34341a5225e1be6148a2, type: 2}

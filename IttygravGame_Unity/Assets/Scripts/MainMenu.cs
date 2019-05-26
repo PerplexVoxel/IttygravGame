@@ -20,6 +20,7 @@ public class MainMenu : MonoBehaviour {
         LoadingPanel.SetActive(false);
 
         if (GameObject.FindGameObjectWithTag("LevelHandler")) Destroy(GameObject.FindGameObjectWithTag("LevelHandler"));
+        if (GameObject.FindGameObjectWithTag("AudioSource")) Destroy(GameObject.FindGameObjectWithTag("AudioSource"));
     }
 
    
@@ -52,5 +53,9 @@ public class MainMenu : MonoBehaviour {
     {
         AboutPanel.SetActive(false);
         HowToPlay.SetActive(!HowToPlay.activeSelf);
+    }
+
+    public void QuitGame(){
+        Application.Quit();
     }
 }
